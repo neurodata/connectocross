@@ -6,8 +6,8 @@
 ### C. elegans male and hermaphrodite, full body
 |  |  |
 |-------|----------|
-| Paper | [Link] |
-| Data |  |
+| Paper | [Link](https://www.nature.com/articles/s41586-019-1352-7) |
+| Data | [Link](https://wormwiring.org/) |
 | Raw data location |  |
 | # nodes | ~300 |
 | # edges |  | 
@@ -17,7 +17,7 @@
 ### C. elegans timeseries, nerve ring
 |  |  |
 |-------|----------|
-| Paper |  |
+| Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.04.30.066209v2) |
 | Data |  |
 | Raw data location |  |
 | # nodes | ~50 - 150 per graph?|
@@ -44,18 +44,18 @@ Notes
 ### Drosophila adult brain chunk (hemibrain)
 |  |  |
 |-------|----------|
-| Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.08.21.260984v2) |
-| Data | not yet available |
-| Raw data location | CATMAID |
-| # nodes | 2728 |
-| # edges | 11437 | 
-| # synapses | | 
+| Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.01.21.911859v1) |
+| Data | [Link](https://www.janelia.org/project-team/flyem/hemibrain) |
+| Raw data location | neuPrint |
+| # nodes | 20 - 25k, 67k more small objects |
+| # edges |  | 
+| # synapses | 64M | 
 | # graphs | 1 |
 
 ### Drosophila adult brain sparse (FAFB)
 |  |  |
 |-------|----------|
-| Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.08.21.260984v2) |
+| Paper |  |
 | Data | not yet available |
 | Raw data location | CATMAID |
 | # nodes | 2728 |
