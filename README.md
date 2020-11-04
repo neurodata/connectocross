@@ -76,7 +76,7 @@ Notes
 
 
 ## Simple a priori models
----
+
 ### Density (ER)
 
 ### Left/right (SBM/DCSBM)
@@ -91,7 +91,7 @@ Notes
 ### Distribution of weights, degrees
 
 ## More complicated a priori models
----
+
 ### Homotypic
 
 ### Testing left vs right, quantify correlation, spectral similarity, GM performance, etc.
@@ -100,14 +100,14 @@ Notes
 - degree of reciprocal feedback/
 
 ## A posteriori models
----
+
 ### Spectral clustering and estimating an SBM, DCSBM, DDSBM
 - can try any of these with homotypic also... or correlation L/R
 
 ### Feedforward layout and proportion of feedforward edges
 
 ## Models with biological metadata
---- 
+
 ### Testing for Peter's rule via the contact graph
 - is the adjacency a noisy version of the contact graph?
 - how does rank change as we jitter xyz of synapses
@@ -119,7 +119,7 @@ Notes
 ### Can we cluster edges via connectivity + space? 
 
 ## Niche models that may not work for all data 
----
+
 ### Different hypotheses for a multilayer SBM-like model
 - maggot data
 
