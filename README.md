@@ -56,7 +56,7 @@ Notes
 |  |  |
 |-------|----------|
 | Paper | [Link](https://www.cell.com/cell/fulltext/S0092-8674(18)30787-6) |
-| Data | [Link](https://temca2data.org/) (unsure where graph is) |
+| Data | [Link to overview](https://temca2data.org/) [Link to CATMAID](https://fafb.catmaid.virtualflybrain.org/)|
 | Raw data location | CATMAID |
 | # nodes |  |
 | # edges |  | 
