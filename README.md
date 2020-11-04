@@ -60,7 +60,7 @@ Notes
 | Raw data location | CATMAID |
 | # nodes |  |
 | # edges |  | 
-| # synapses | | 
+| # synapses | |
 | # graphs | 1 |
 
 ### Playnerius larva full 
