@@ -56,7 +56,7 @@ Notes
 |  |  |
 |-------|----------|
 | Paper | [Link](https://www.cell.com/cell/fulltext/S0092-8674(18)30787-6) |
-| Data | [Link to overview](https://temca2data.org/) [Link to CATMAID](https://fafb.catmaid.virtualflybrain.org/)|
+| Data | [Link to overview,](https://temca2data.org/) [Link to CATMAID](https://fafb.catmaid.virtualflybrain.org/)|
 | Raw data location | CATMAID |
 | # nodes |  |
 | # edges |  | 
@@ -67,7 +67,7 @@ Notes
 |  |  |
 |-------|----------|
 | Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.08.21.260984v2) |
-| Data | not yet available |
+| Data | not yet available (I think) |
 | Raw data location | CATMAID |
 | # nodes | 2728 |
 | # edges | 11437 | 
@@ -97,12 +97,12 @@ Notes
 ### Testing left vs right, quantify correlation, spectral similarity, GM performance, etc.
 
 ### Testing for gaia's directedness (or just quantifying to what extent it happens)
-- degree of reciprocal feedback/
+- degree of reciprocal feedback?
 
 ## A posteriori models
 
 ### Spectral clustering and estimating an SBM, DCSBM, DDSBM
-- can try any of these with homotypic also... or correlation L/R
+- can try to incorporate homotypic affinity also... or correlation L/R
 
 ### Feedforward layout and proportion of feedforward edges
 
@@ -111,6 +111,7 @@ Notes
 ### Testing for Peter's rule via the contact graph
 - is the adjacency a noisy version of the contact graph?
 - how does rank change as we jitter xyz of synapses
+- could we also just swap synapses in an epsilon ball and see how structure changes?
 
 ### Spectral clustering that uses morphology
 
