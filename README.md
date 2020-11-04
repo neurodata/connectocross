@@ -55,11 +55,11 @@ Notes
 ### Drosophila adult brain sparse (FAFB)
 |  |  |
 |-------|----------|
-| Paper |  |
-| Data | not yet available |
+| Paper | [Link](https://www.cell.com/cell/fulltext/S0092-8674(18)30787-6) |
+| Data | [Link](https://temca2data.org/) (unsure where graph is) |
 | Raw data location | CATMAID |
-| # nodes | 2728 |
-| # edges | 11437 | 
+| # nodes |  |
+| # edges |  | 
 | # synapses | | 
 | # graphs | 1 |
 
