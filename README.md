@@ -76,6 +76,7 @@ Notes
 
 
 ## Simple a priori models
+a.k.a. look at the data, more or less
 
 ### Density (ER)
 
