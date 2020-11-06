@@ -125,8 +125,10 @@ a.k.a. look at the data, more or less
 ### Different hypotheses for a multilayer SBM-like model
 - maggot data
 
-## Matching FAFB and hemibrain or either to maggot
+### Matching FAFB and hemibrain or either to maggot
 - could be spectral, could be GM
 - results maybe bad?
 - could use morphology, could not
+
+### Spectral coarsening between maggot and adult
 
