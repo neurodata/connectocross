@@ -98,7 +98,9 @@ a.k.a. look at the data, more or less
 ### Testing left vs right, quantify correlation, spectral similarity, GM performance, etc.
 
 ### Testing for gaia's directedness (or just quantifying to what extent it happens)
-- degree of reciprocal feedback?
+- degree of reciprocal feedback? had thought about something along the lines of testing 
+  for the difference between left and right latent positions. but maybe a simpler first
+  statistic to compute is: P(edge from j to i | edge from i to j) 
 
 ## A posteriori models
 
