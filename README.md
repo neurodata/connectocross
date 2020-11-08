@@ -121,6 +121,8 @@ a.k.a. look at the data, more or less
 ### Configuration models that swap synapses within an epsilon ball
 
 ### Can we cluster edges via connectivity + space? 
+- had talked about trying to cluster the line graph 
+- spectral embedding of the line graph looked bad when I tried it. Need to follow up.
 
 ## Niche models that may not work for all data 
 
