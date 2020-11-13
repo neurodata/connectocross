@@ -47,6 +47,11 @@ Notes
 | # synapses ~300k | 
 | # graphs | 1 |
 
+Notes: 
+- Have incomplete cell lineage 
+- I think Marta's lab has some single cell scRNAseq
+- Have edge type split by axo, dendrite
+
 ### Drosophila adult brain chunk (hemibrain)
 |  |  |
 |-------|----------|
