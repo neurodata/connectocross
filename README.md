@@ -69,7 +69,7 @@ Notes
 | # synapses | |
 | # graphs | 1 |
 
-### Playnerius larva full 
+### Platynereis larva full 
 |  |  |
 |-------|----------|
 | Paper | [Link](https://www.biorxiv.org/content/10.1101/2020.08.21.260984v2) |
