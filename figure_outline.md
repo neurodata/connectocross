@@ -7,9 +7,12 @@ Similar to README but by Figure
 # Figure X: spectral clustering hierarchies on every connectome 
 - a posteriori model selection one
 
-# Figure X: how symmetric are the brains
+# Figure X: how symmetric are the brains, bilateral symmetry
 - how symmetric are edges as a function of the edge weights
     - edge weight distributions by L/R type
+- edge weight distributions by L->L, L->R etc. 
+- nonpar/semipar? 
+- GM for quantifying
 
 # Figure X: Gaia's directedness
 - in degree vs out degree
@@ -19,15 +22,8 @@ Similar to README but by Figure
 
 # Figure X: how feedforward are the brains 
 
-# Figure X: how homophillic are they 
+# Figure X: how homophillic/assortative are they 
 
 # Figure X: how homotopic is it 
 
-# Figure X: are the graphs meaningfully directed?
-- testing for strength of directedness
-
-# Figure X: in degree, out degree
-
-# Figure X:
-
-
+# Figure X: here's a model with all of the stuff we just said exists
