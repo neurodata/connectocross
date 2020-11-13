@@ -77,6 +77,24 @@ Notes
 | # synapses | | 
 | # graphs | 1 |
 
+### MiCRONS
+| | | 
+|-------|--------|
+
+### Bryan Jones Retina 
+
+### Cionia intestinalis
+| | |
+|-------|--------|
+| Paper | [Link](https://elifesciences.org/articles/16962) |
+| Data | |
+| # nodes | ~200? |
+| # edges | |
+| # synapses | |
+| # graphs | | 
+
+
+
 
 ## Simple a priori models
 a.k.a. look at the data, more or less
