@@ -14,6 +14,9 @@
 | # synapses | | 
 | # graphs | 2 |
 
+Notes 
+- has chemical and gap junction graphs
+
 ### C. elegans timeseries, nerve ring
 |  |  |
 |-------|----------|
