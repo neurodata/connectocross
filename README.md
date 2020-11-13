@@ -156,6 +156,7 @@ Things that we always want to know about a graph. Usually:
 
 ### Spectral clustering and estimating an SBM, DCSBM, DDSBM
 - can try to incorporate homotypic affinity also... or correlation L/R
+- figure 3 from maggot paper
 
 ### Feedforward layout and proportion of feedforward edges
 
