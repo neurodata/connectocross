@@ -8,6 +8,14 @@ Similar to README but by Figure
 - a posteriori model selection one
 
 # Figure X: how symmetric are the brains
+- how symmetric are edges as a function of the edge weights
+    - edge weight distributions by L/R type
+
+# Figure X: Gaia's directedness
+- in degree vs out degree
+- something about testing for whether pij = pji
+- or how correlated are pij and pji
+- can also do something at the block level!
 
 # Figure X: how feedforward are the brains 
 
@@ -15,14 +23,11 @@ Similar to README but by Figure
 
 # Figure X: how homotopic is it 
 
-# Figure X: distribution of edge weights for each graph plot
-- how symmetric are edges as a function of the edge weights
-
 # Figure X: are the graphs meaningfully directed?
 - testing for strength of directedness
 
-# Figure x: in degree, out degree
+# Figure X: in degree, out degree
 
-
+# Figure X:
 
 
