@@ -78,22 +78,45 @@ Notes
 ## Simple a priori models
 a.k.a. look at the data, more or less
 
+### Simplest statistics
+Things that we always want to know about a graph. Usually: 
+- Number of nodes
+- Number of edges
+- For a connectome, maybe number of actual synapses
+
 ### Density (ER)
+- compute the density (p) for each connectome, can simply plot each.
 
 ### Left/right (SBM/DCSBM)
-- Test different hypotheses about $\hat{B}$
+- Test different hypotheses about $\hat{B}$ (see statistical connectomics) 
+   - is it more densely connected within block than between? To what extent?
+      - maybe can compare this for many of the connectomes. probably not all
+   - core-periphery
+   - etc.
 
 ### Left/right + any known metadata (SBM/DCSBM)
 - If any putative cell types are known, use those
+- now we get a more refined SBM than the above, maybe interesting, maybe not? 
+   - cell type data may not be available for all of the above
+- can do similar tests, results may or may not be different
 
 ### General low rank (RDPG)
-- Scree plots, estimation of rank (ZG2)
+- Scree plots
+- estimation of rank (ZG2)
+- not sure that this will be interesting to compare across connectome or not. would
+  have to normalize for the number of nodes somehow, i'd think.
 
 ### Distribution of weights, degrees
+- Can just look at distribution of edge weight for each, i guess where weight is number of synapses
+- in/out degree distribution, marginals and joint, is easy enough to plot.
+   - again, don't know whether it'll be meaningful to compare across connectome or not
 
 ## More complicated a priori models
 
-### Homotypic
+### Homotypic affinity
+- can test for whether cell pairs (or blocks?) are more likely than chance to connect (homotypic affinity)
+- requires having cell pairs
+   - probably only maggot and c. elegans
 
 ### Testing left vs right, quantify correlation, spectral similarity, GM performance, etc.
 
