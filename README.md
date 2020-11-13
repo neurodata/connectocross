@@ -16,6 +16,9 @@
 
 Notes 
 - has chemical and gap junction graphs
+- has some single-cell transcriptomics
+- has cell lineage
+
 
 ### C. elegans timeseries, nerve ring
 |  |  |
@@ -92,8 +95,6 @@ Notes
 | # edges | |
 | # synapses | |
 | # graphs | | 
-
-
 
 
 ## Simple a priori models
