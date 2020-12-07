@@ -5,7 +5,7 @@ from typing import List, Tuple, Union
 import networkx as nx
 import numpy as np
 import pandas as pd
-import shutil, os, sys, json
+import shutil, os, sys, json, itertools
 import re
 
 
@@ -35,6 +35,7 @@ class Metagraph:
             graphs: List[Union[nx.Graph, nx.DiGraph]] = None,
             edge_att_names: List[set] = None,
             node_att_names: List[set] = None,
+            interpolate_att = False,
     ):
         # nodes must be basic data types
         if graphs is None:
@@ -43,28 +44,20 @@ class Metagraph:
             self.node_att_names = []
         else:
             self.nx_obj = graphs
-            if edge_att_names is None:
+            if edge_att_names is None and interpolate_att:
                 # find edge attributes names if not provided.
                 self.edge_att_names = []
                 for graph in graphs:
                     self.edge_att_names.append(
-                        set(
-                            np.array(
-                                [list(graph.edges[n].keys()) for n in graph.edges()]
-                            ).flatten()
-                        )
+                        set(itertools.chain(*[list(graph.edges[n].keys()) for n in graph.edges()]))
                     )
             else:
                 self.edge_att_names = edge_att_names
-            if node_att_names is None:
+            if node_att_names is None and interpolate_att:
                 self.node_att_names = []
                 for graph in graphs:
                     self.node_att_names.append(
-                        set(
-                            np.array(
-                                [list(graph.nodes[n].keys()) for n in graph.nodes()]
-                            ).flatten()
-                        )
+                        set(itertools.chain(*[list(graph.nodes[n].keys()) for n in graph.nodes()]))
                     )
             else:
                 self.node_att_names = node_att_names
@@ -96,12 +89,14 @@ class Metagraph:
             adj_mats.append(nx.to_numpy_array(conv, dtype=np.int32))
             if return_edge_attributes:
                 edge_atts.append({})
-                for eatt in self.edge_att_names[i]:
-                    edge_atts[-1][eatt] = nx.get_edge_attributes(conv, eatt)
+                if self.edge_att_names is not None:
+                    for eatt in self.edge_att_names[i]:
+                        edge_atts[-1][eatt] = nx.get_edge_attributes(conv, eatt)
             if return_node_attributes:
                 node_atts.append({})
-                for natt in self.node_att_names[i]:
-                    node_atts[-1][natt] = nx.get_node_attributes(conv, natt)
+                if self.node_att_names is not None:
+                    for natt in self.node_att_names[i]:
+                        node_atts[-1][natt] = nx.get_node_attributes(conv, natt)
         to_return = [adj_mats]
         if return_node_attributes:
             to_return.append(node_atts)
@@ -126,20 +121,23 @@ class Metagraph:
             nx.to_pandas_edgelist(graph)[["source", "target"]].to_csv(
                 os.path.join(gpath, "edgelist.csv")
             )
-            for n_att in self.node_att_names[index]:
-                ndict = nx.get_node_attributes(graph, n_att)
-                json.dump(
-                    ndict, open(os.path.join(gpath, "nodeatt_" + n_att + ".json"), "w")
-                )
-            for e_att in self.edge_att_names[index]:
-                edict = self._serializable_atts(nx.get_edge_attributes(graph, e_att))
-                json.dump(
-                    edict, open(os.path.join(gpath, "edgeatt_" + e_att + ".json"), "w")
-                )
+            if self.node_att_names is not None:
+                for n_att in self.node_att_names[index]:
+                    ndict = nx.get_node_attributes(graph, n_att)
+                    json.dump(
+                        ndict, open(os.path.join(gpath, "nodeatt_" + n_att + ".json"), "w")
+                    )
+            if self.edge_att_names is not None:
+                for e_att in self.edge_att_names[index]:
+                    edict = self._serializable_atts(nx.get_edge_attributes(graph, e_att))
+                    json.dump(
+                        edict, open(os.path.join(gpath, "edgeatt_" + e_att + ".json"), "w")
+                    )
             index += 1
         shutil.make_archive(
             base_name=path, format="zip", root_dir=tmpdir, base_dir="./"
         )
+        os.rename(path + '.zip', path)
         shutil.rmtree(tmpdir)
 
     def load(self, path: str):
@@ -156,7 +154,7 @@ class Metagraph:
             shutil.unpack_archive(filename=path, extract_dir=tmpdir, format="zip")
         except Exception:
             raise IOError("Failed to read graph from disk.")
-        for graph_dir in os.listdir(tmpdir):
+        for graph_dir in sorted(os.listdir(tmpdir)):
             edgelist = pd.read_csv(os.path.join(tmpdir, graph_dir, "edgelist.csv"))
             g = nx.from_pandas_edgelist(edgelist)
             e_att_names = []
