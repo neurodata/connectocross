@@ -39,22 +39,46 @@ class GraphIO:
         return new_dict
 
     @staticmethod
-    def _gen_graph(graph_dir: str) -> Union[nx.Graph, nx.DiGraph]:
+    def _read_edgelist(graph_dir: str,
+                       create_using=nx.Graph) -> Union[nx.Graph, nx.DiGraph]:
+        path = os.path.join(graph_dir, 'edgelist.csv')
         try:
-            edgelist = pd.read_csv(os.path.join(graph_dir, "edgelist.csv"))
-        except Exception:
-            raise IOError("each graph must have an associated edgelist")
+            g = nx.readwrite.read_weighted_edgelist(path,
+                                                    create_using=create_using,
+                                                    delimiter=',')
+        except (ValueError, TypeError):
+            g = nx.readwrite.read_edgelist(path, create_using=create_using,
+                                           data=False,
+                                           delimiter=',')
+        return g
+
+
+    @staticmethod
+    def n_map(x: str):
+        if type(x) is int or type(x) is float:
+            return x
+        if type(x) is str and x.isnumeric():
+            try:
+                x = int(x)
+            except TypeError:
+                x = float(x)
+        return x
+
+    @classmethod
+    def _gen_graph(cls, graph_dir: str) -> Union[nx.Graph, nx.DiGraph]:
         try:
             with open(os.path.join(graph_dir, 'graphatt_isDirected.json'), 'r') as f:
                 line = f.readline()
                 if 'true' in line:
-                    g = nx.from_pandas_edgelist(edgelist, create_using=nx.DiGraph)
+                    g = cls._read_edgelist(graph_dir, create_using=nx.DiGraph)
                 elif 'false' in line:
-                    g = nx.from_pandas_edgelist(edgelist, create_using=nx.Graph)
+                    g = cls._read_edgelist(graph_dir, create_using=nx.Graph)
                 else:
                     raise IOError("Reserved graph attribute isDirected is corrupted.")
         except FileNotFoundError:
             raise IOError("isDirected graph attribute must exist and be set.")
+        # convert any string representations of number
+        g = nx.relabel_nodes(g, cls.n_map)
         return g
 
     @staticmethod
@@ -87,6 +111,7 @@ class GraphIO:
             )
         return graph_att_names
 
+
     @classmethod
     def dump(cls,
              graph: List[Union[nx.Graph, nx.DiGraph]],
@@ -116,15 +141,23 @@ class GraphIO:
         for i, g in enumerate(graph):
             gpath = os.path.join(tmpdir, "graph_" + str(i))
             os.mkdir(gpath)
-            nx.to_pandas_edgelist(g)[["source", "target"]].to_csv(
-                os.path.join(gpath, "edgelist.csv")
-            )
+            if 'weight' in edge_att_names[i]:
+                nx.readwrite.write_weighted_edgelist(g,
+                                                     os.path.join(gpath, "edgelist.csv"),
+                                                     delimiter=',')
+            else:
+                nx.readwrite.write_edgelist(g,
+                                            os.path.join(gpath, "edgelist.csv"),
+                                            data=False,
+                                            delimiter=',')
             for n_att in node_att_names[i]:
                 ndict = nx.get_node_attributes(g, n_att)
                 json.dump(
                     ndict, open(os.path.join(gpath, "nodeatt_" + n_att + ".json"), "w")
                 )
             for e_att in edge_att_names[i]:
+                if e_att == 'weight':
+                    continue
                 edict = cls._serializable_atts(nx.get_edge_attributes(g, e_att))
                 json.dump(
                     edict, open(os.path.join(gpath, "edgeatt_" + e_att + ".json"), "w")
