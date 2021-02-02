@@ -1,5 +1,5 @@
-from .metagraph import Metagraph
+from .grapgh_io import GraphIO
 
 __all__ = [
-    "Metagraph",
+    "GraphIO",
 ]
