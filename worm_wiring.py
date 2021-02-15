@@ -141,6 +141,7 @@ def worm_wiring():
         print(graph.nodes.data())
         plt.figure()
         nx.draw(graph)
+    return extracted_connectome
         
     
 worm_wiring()
