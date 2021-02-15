@@ -41,7 +41,12 @@ class GraphIO:
     @staticmethod
     def _read_edgelist(graph_dir: str,
                        create_using=nx.Graph) -> Union[nx.Graph, nx.DiGraph]:
-        path = os.path.join(graph_dir, 'edgelist.csv')
+        if os.path.isfile(os.path.join(graph_dir, 'edgelist.csv')):
+            path = os.path.join(graph_dir, 'edgelist.csv')
+        elif os.path.isfile(os.path.join(graph_dir, 'edgelist.symlink')):
+            path = os.readlink(os.path.join(graph_dir, 'edgelist.symlink'))
+        else:
+            raise IOError("MGraph must contain an edgelist in each graph directory")
         try:
             g = nx.readwrite.read_weighted_edgelist(path,
                                                     create_using=create_using,
@@ -110,6 +115,7 @@ class GraphIO:
                 set(graph.graph.keys())
             )
         return graph_att_names
+
 
 
     @classmethod
@@ -215,21 +221,24 @@ class GraphIO:
             for file in os.listdir(os.path.join(tmpdir, graph_dir)):
                 if file != "edgelist.csv":
                     attname = re.split("_|\.", file)[1]
+                    fpath = os.path.join(tmpdir, graph_dir, file)
+                    if '.symlink' in file:
+                        fpath = os.readlink(fpath)
                     if "edgeatt" in file:
                         att = cls._get_att_from_json(
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=True
+                            fpath, evaluate_keys=True
                         )
                         nx.set_edge_attributes(g, att, attname)
                         e_att_names[-1].add(attname)
                     elif "nodeatt" in file:
                         att = cls._get_att_from_json(
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=True
+                            fpath, evaluate_keys=True
                         )
                         nx.set_node_attributes(g, att, attname)
                         n_att_names[-1].add(attname)
                     elif "graphatt" in file:
                         att = cls._get_att_from_json(
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=False
+                            fpath, evaluate_keys=False
                         )
                         g.graph[attname] = att
                         g_att_names[-1].add(attname)
