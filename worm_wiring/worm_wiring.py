@@ -107,9 +107,9 @@ def make_consistent(graphs):
         for j in range(i+1, len(graphs)):
             g1 = graphs[i]
             g2 = graphs[j]
-            id2nodenum = ({g1.nodes[k]['ID']:k for k in range(len(g1.nodes))},
-                          {g2.nodes[k]['ID']:k for k in range(len(g2.nodes))})
-            meta_fields = ['cell_type0', 'cell_type1']
+            id2nodenum = ({g1.nodes[k]['ID']:k for k in g1.nodes},
+                          {g2.nodes[k]['ID']:k for k in g2.nodes})
+            meta_fields = ['cell_type0', 'cell_type1', 'Hemisphere']
             for meta in meta_fields:
                 for ID in ids:
                     try:
