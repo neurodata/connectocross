@@ -238,7 +238,7 @@ class GraphIO:
             g_att_names.append(set())
             for file in os.listdir(os.path.join(tmpdir, graph_dir)):
                 if file != "edgelist.csv":
-                    attname = re.split("_|\.", file)[1]
+                    attname = ''.join(re.split("_|\.", file)[1:-1])
                     fpath = os.path.join(tmpdir, graph_dir, file)
                     if '.symlink' in file:
                         fpath = os.readlink(fpath)
