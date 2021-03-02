@@ -116,11 +116,27 @@ class GraphIO:
             )
         return graph_att_names
 
-
+    @staticmethod
+    def convert_multigraph(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+        key_map = {}
+        graphs = []
+        for edge in mg.edges(data=True, keys=True):
+            link = tuple(edge[0][:2])
+            key = edge[0][2]
+            data = edge[1]
+            if key not in key_map:
+                graphs.append(nx.DiGraph())
+                graphs[-1].add_nodes_from(mg.nodes(data=True))
+                key_map[key] = len(graphs) - 1
+            ind = key_map[key]
+            graphs[ind].add_edge(link[0], link[1])
+            for key in data:
+                graphs[ind].edges(link)[key] = data[key]
+        return graphs
 
     @classmethod
     def dump(cls,
-             graph: List[Union[nx.Graph, nx.DiGraph]],
+             graph: List[Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph]],
              path: str, edge_att_names: List[set] = None,
              node_att_names: List[set] = None,
              graph_att_names: List[set] = None):
@@ -133,6 +149,8 @@ class GraphIO:
         :param graph_att_names: optional, provide graph attribute names to dump, else will infer
         :return: None
         """
+        if type(graph) is nx.MultiDiGraph:
+            graph = cls.convert_multigraph(graph)
 
         uuid = "{:4}".format(np.random.randint(0, 9999))
         tmpdir = "./tmp" + uuid
