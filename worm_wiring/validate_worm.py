@@ -10,7 +10,7 @@ Purpose: Validates results of worm_wiring.py
 
 import pandas as pd
 import numpy as np
-from worm_wiring import fill_missing
+from worm_wiring.worm_wiring import fill_missing
 
 def validate_synlist(dfs, graphs):
     '''validates the synlist file graphs'''
