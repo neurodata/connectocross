@@ -33,16 +33,19 @@ def read_graph(base_url, name):
         edge_attr=True,
         create_using=nx.MultiDiGraph,
     )
+    og_id2id = {}
     for node in graph.nodes:
         if node[:3] == "BWM": #convert ID to worm_wiring form 
             ID = node[4].lower() + "BWM" + node[5] + str(int(node[6:]))
         else:
             ID = node
-        graph.nodes[node]['ID'] = ID
+        og_id2id[node] = ID
+        graph.nodes[node]['original_id'] = node
         graph.nodes[node]['cell_type0'] = None
         graph.nodes[node]['cell_type1'] = None
         graph.nodes[node]['hemisphere'] = None
         graph.nodes[node]['dorsoventral'] = None
+    graph = nx.relabel.relabel_nodes(graph, og_id2id)
     return graph
 
 
