@@ -18,12 +18,6 @@ def validate_synlist(dfs, graphs):
         g = graphs[i]
         df = dfs[i]
         pre_ids = df.iloc[1:, 2]
-        post1_ids = df.iloc[1:, 7]
-        post2_ids = df.iloc[1:, 8]
-        post3_ids = df.iloc[1:, 9]
-        post4_ids = df.iloc[1:, 10]
-        unique_ids = list(pd.concat((pre_ids, post1_ids, post2_ids, post3_ids, post4_ids)).dropna().unique())
-        id2node = {unique_ids[i]:i for i in range(len(unique_ids))}
         pre_ids = pd.Series(pre_ids.index.values, index=pre_ids)
         
         #Graph data and edge metadata
@@ -37,9 +31,9 @@ def validate_synlist(dfs, graphs):
             EMseries = df.iloc[j, 1]
             synapse_type = df.iloc[j, 4]
             sections = df.iloc[j, 5]
-            pre_node = id2node[pre_id]
+            pre_node = pre_id
             try:
-                post1_node = id2node[post1_id]
+                post1_node = post1_id
                 edge_id = (pre_node, post1_node)
                 try:
                     assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge1 existence validation" %j
@@ -56,11 +50,11 @@ def validate_synlist(dfs, graphs):
                         assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge1 existence validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge1 sections validation" %j
-            except KeyError:
+            except AssertionError:
                 assert np.isnan(post1_id), "Index %s failed post1 validation" %j
 
             try:
-                post2_node = id2node[post2_id]
+                post2_node = post2_id
                 edge_id = (pre_node, post2_node)
                 try:
                     assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge2 existence validation" %j
@@ -77,11 +71,11 @@ def validate_synlist(dfs, graphs):
                         assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge2 existence validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge2 sections validation" %j
-            except KeyError:
+            except AssertionError:
                 assert np.isnan(post2_id), "Index %s failed post2 validation" %j
 
             try:
-                post3_node = id2node[post3_id]
+                post3_node = post3_id
                 edge_id = (pre_node, post3_node)
                 try:
                     assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge3 existence validation" %j
@@ -98,11 +92,11 @@ def validate_synlist(dfs, graphs):
                         assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge3 existence validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge3 sections validation" %j
-            except KeyError:
+            except AssertionError:
                 assert np.isnan(post3_id), "Index %s failed post3 validation" %j
 
             try:
-                post4_node = id2node[post4_id]
+                post4_node = post4_id
                 edge_id = (pre_node, post4_node)
                 try:
                     assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge4 existence validation" %j
@@ -119,7 +113,7 @@ def validate_synlist(dfs, graphs):
                         assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge4 existence validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
                         assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge4 sections validation" %j
-            except KeyError:
+            except AssertionError:
                 assert np.isnan(post4_id), "Index %s failed post4 validation" %j
 
 def validate_connectome(g, cell_types, nodenums, ids, i, l):
@@ -193,8 +187,6 @@ def valid_worm(dfs, graphs, df_type):
             df = fill_missing(df)
             start_idx = 3
         ids = [df.iloc[:, start_idx-1], df.iloc[start_idx-1, :]]
-        unique_ids = list(pd.concat((ids[0], ids[1])).dropna().unique())
-        id2nodenum = {unique_ids[i]:i for i in range(len(unique_ids))}
     
         for j in range(start_idx, df.shape[0]):
             for k in range(start_idx, df.shape[1]):
@@ -203,7 +195,7 @@ def valid_worm(dfs, graphs, df_type):
                 for cell_idx in range(start_idx-1):
                     cell_types.append((df.iat[j, cell_idx], df.iat[cell_idx, k]))
                 edge_weight = df.iat[j, k]
-                nodenums = [id2nodenum[ids[l]] for l in range(2)]
+                nodenums = [ids[l] for l in range(2)]
                 
                 #df_type-specific metadata validation
                 for l in range(2):
