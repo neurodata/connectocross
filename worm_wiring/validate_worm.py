@@ -10,7 +10,7 @@ Purpose: Validates results of worm_wiring.py
 
 import pandas as pd
 import numpy as np
-from worm_wiring import fill_missing
+from worm_wiring.worm_wiring import fill_missing
 
 def validate_synlist(dfs, graphs):
     '''validates the synlist file graphs'''
@@ -25,13 +25,6 @@ def validate_synlist(dfs, graphs):
         unique_ids = list(pd.concat((pre_ids, post1_ids, post2_ids, post3_ids, post4_ids)).dropna().unique())
         id2node = {unique_ids[i]:i for i in range(len(unique_ids))}
         pre_ids = pd.Series(pre_ids.index.values, index=pre_ids)
-        
-        #Node Metadata
-        for j in range(len(g.nodes)):
-            if g.nodes[j]['Hemisphere'] == 'Left':
-                assert g.nodes[j]['ID'][-1] == 'L'
-            elif g.nodes[j]['Hemisphere'] == 'Right':
-                assert g.nodes[j]['ID'][-1] == 'R'
         
         #Graph data and edge metadata
         for j in range(1, df.shape[0]):
@@ -229,12 +222,6 @@ def valid_worm(dfs, graphs, df_type):
                     assert g.edges[nodenums[0], nodenums[1]]['weight'] == edge_weight,\
                     "Node pair (%s, %s) in graph %s with IDs (%s, %s) failed edge weight validation" %(nodenums[0], nodenums[1], i, ids[0], ids[1])
                         
-        #Hemisphere validation
-        for j in range(len(g.nodes)):
-            if g.nodes[j]['Hemisphere'] == 'Left':
-                assert g.nodes[j]['ID'][-1] == 'L'
-            elif g.nodes[j]['Hemisphere'] == 'Right':
-                assert g.nodes[j]['ID'][-1] == 'R'
 
 def validate_worm(file_dfs, worm_graphs):
     '''Calls valid_worm() for each list of graphs in worm_graphs with the appropriate inputs'''

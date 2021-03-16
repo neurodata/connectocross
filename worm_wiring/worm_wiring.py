@@ -109,7 +109,7 @@ def make_consistent(graphs):
             g2 = graphs[j]
             id2nodenum = ({g1.nodes[k]['ID']:k for k in g1.nodes},
                           {g2.nodes[k]['ID']:k for k in g2.nodes})
-            meta_fields = ['cell_type0', 'cell_type1', 'Hemisphere']
+            meta_fields = ['cell_type0', 'cell_type1', 'hemisphere', 'dorsoventral']
             for meta in meta_fields:
                 for ID in ids:
                     try:
@@ -183,12 +183,43 @@ def extract_listdata(df):
     #Metadata
     for i in range(len(unique_ids)):
         G.nodes[i]['ID'] = unique_ids[i]
-        if(unique_ids[i][-1]=='L'):
-            G.nodes[i]['Hemisphere'] = 'Left'
-        elif(unique_ids[i][-1]=='R'):
-            G.nodes[i]['Hemisphere'] = 'Right'
+        
+        j = 0
+        while(ord(unique_ids[i][-1-j]) >= 48 and ord(unique_ids[i][-1-j]) <= 57): #last character is a digit 0-9
+            j += 1
+            
+        if(unique_ids[i][-1-j]=='L'):
+            G.nodes[i]['hemisphere'] = 'left'
+            try:
+                if(unique_ids[i][-1-j-1]=='D' or unique_ids[i][0]=='d'):
+                    G.nodes[i]['dorsoventral'] = 'dorsal'
+                elif(unique_ids[i][-1-j-1]=='V' or unique_ids[i][0]=='v'):
+                    G.nodes[i]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[i]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[i]['dorsoventral'] = None
+                
+        elif(unique_ids[i][-1-j]=='R'):
+            G.nodes[i]['hemisphere'] = 'right'
+            
+            try:
+                if(unique_ids[i][-1-j-1]=='D' or unique_ids[i][0]=='d'):
+                    G.nodes[i]['dorsoventral'] = 'dorsal'
+                elif(unique_ids[i][-1-j-1]=='V' or unique_ids[i][0]=='v'):
+                    G.nodes[i]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[i]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[i]['dorsoventral'] = None
+        
+        elif(unique_ids[i][-1-j]=='D'):
+            G.nodes[i]['dorsoventral'] = 'dorsal'
+        elif(unique_ids[i][-1-j]=='V'):
+            G.nodes[i]['dorsoventral'] = 'ventral'
         else:
-            G.nodes[i]['Hemisphere'] = None
+            G.nodes[i]['hemisphere'] = None
+            G.nodes[i]['dorsoventral'] = None
         try: #using rows (column of IDs)
             G.nodes[i]['cell_type0'] = None
         except KeyError: #use columns
@@ -238,12 +269,42 @@ def extract_data(df, df_type):
     #Metadata
     for i in range(len(unique_ids)):
         G.nodes[i]['ID'] = unique_ids[i]
-        if(unique_ids[i][-1]=='L'):
-            G.nodes[i]['Hemisphere'] = 'Left'
-        elif(unique_ids[i][-1]=='R'):
-            G.nodes[i]['Hemisphere'] = 'Right'
+        j = 0
+        while(ord(unique_ids[i][-1-j]) >= 48 and ord(unique_ids[i][-1-j]) <= 57): #last character is a digit 0-9
+            j += 1
+            
+        if(unique_ids[i][-1-j]=='L'):
+            G.nodes[i]['hemisphere'] = 'left'
+            try:
+                if(unique_ids[i][-1-j-1]=='D' or unique_ids[i][0]=='d'):
+                    G.nodes[i]['dorsoventral'] = 'dorsal'
+                elif(unique_ids[i][-1-j-1]=='V' or unique_ids[i][0]=='v'):
+                    G.nodes[i]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[i]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[i]['dorsoventral'] = None
+                
+        elif(unique_ids[i][-1-j]=='R'):
+            G.nodes[i]['hemisphere'] = 'right'
+            
+            try:
+                if(unique_ids[i][-1-j-1]=='D' or unique_ids[i][0]=='d'):
+                    G.nodes[i]['dorsoventral'] = 'dorsal'
+                elif(unique_ids[i][-1-j-1]=='V' or unique_ids[i][0]=='v'):
+                    G.nodes[i]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[i]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[i]['dorsoventral'] = None
+        
+        elif(unique_ids[i][-1-j]=='D'):
+            G.nodes[i]['dorsoventral'] = 'dorsal'
+        elif(unique_ids[i][-1-j]=='V'):
+            G.nodes[i]['dorsoventral'] = 'ventral'
         else:
-            G.nodes[i]['Hemisphere'] = None
+            G.nodes[i]['hemisphere'] = None
+            G.nodes[i]['dorsoventral'] = None
         for cell_idx in range(len(cell_types)):
             cell_type = cell_types[cell_idx]
             try: #using rows (column of IDs)
