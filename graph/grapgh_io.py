@@ -123,7 +123,7 @@ class GraphIO:
             edge_data = {tuple(e[:2]): e[2] for e in edge_data}
             node_data = g.nodes(data=True)
             node_data = {n[0]: n[1] for n in node_data}
-            for n, i in enumerate(ids):
+            for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
             node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
             edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
