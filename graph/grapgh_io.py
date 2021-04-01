@@ -69,9 +69,9 @@ class GraphIO:
         """
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
         """
-        if type(all(graphs)) is nx.Graph:
+        if all([type(g) is nx.Graph for g in graphs]):
             multi_graph = nx.MultiGraph
-        elif type(all(graphs)) is nx.DiGraph:
+        elif all([type(g) is nx.DiGraph for g in graphs]):
             multi_graph = nx.MultiDiGraph
         else:
             raise TypeError
