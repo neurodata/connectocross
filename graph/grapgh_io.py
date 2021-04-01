@@ -64,6 +64,26 @@ class GraphIO:
                 graphs[ind].edges[link][key] = data[key]
         return graphs
 
+    @staticmethod
+    def list_to_multigraph(graphs: List[Union[nx.Graph, nx.DiGraph]]) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+        """
+        Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
+        """
+        if type(all(graphs)) is nx.Graph:
+            multi_graph = nx.MultiGraph
+        elif type(all(graphs)) is nx.DiGraph:
+            multi_graph = nx.MultiDiGraph
+        else:
+            raise TypeError
+        nodes = [set(g.nodes(data=True)) for g in graphs]
+        nodes = set.union(*nodes)
+        multi_graph.add_nodes_from(nodes)
+        for i, g in enumerate(graphs):
+            for source, target, data in g.edges(data=True):
+                multi_graph.add_edge(source, target, key=i, attr_dict=data)
+        return multi_graph
+
+
     @classmethod
     def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
         """
@@ -103,7 +123,7 @@ class GraphIO:
             edge_data = {tuple(e[:2]): e[2] for e in edge_data}
             node_data = g.nodes(data=True)
             node_data = {n[0]: n[1] for n in node_data}
-            for n, i in enumerate(ids):
+            for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
             node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
             edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
