@@ -86,9 +86,9 @@ class GraphIO:
         for i, g in itr:
             nodes = g.nodes(data=True)
             for source, target, data in g.edges(data=True):
-                multi_graph.add_node(source, attr_dict=nodes[source])
-                multi_graph.add_node(target, attr_dict=nodes[target])
-                multi_graph.add_edge(source, target, key=i, attr_dict=data)
+                multi_graph.add_nodes_from([(source, nodes[source])])
+                multi_graph.add_nodes_from([(target, nodes[target])])
+                multi_graph.add_edges_from([(source, target, i, data)])
         return multi_graph
 
 
