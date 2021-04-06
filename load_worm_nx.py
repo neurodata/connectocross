@@ -7,13 +7,8 @@ Created on Tue Mar 16 12:50:36 2021
 
 Purpose: Load wormwiring graphs
 """
-import requests
 import json
-import pandas as pd
-import networkx as nx
-import matplotlib.pyplot as plt
 import os
-from worm_wiring import worm_wiring as ww
 from networkx.readwrite import json_graph as jg
 
 
