@@ -8,13 +8,11 @@ Created on Tue Feb 23 11:29:14 2021
 
 Purpose: Pull graph data from  witvilet dataset
 """
-
 import requests
 import json
 import pandas as pd
 import networkx as nx
-import worm_wiring as ww
-from worm_wiring import worm_wiring as ww, import load_worm as lw
+from c_elegans.worm_wiring import worm_wiring as ww, load_worm as lw
 from graph import GraphIO
 
 base_url = "http://nemanode.org/api/download-connectivity?datasetId=witvliet_2020_{}"
@@ -70,6 +68,3 @@ def witvilet2020():
     wit_worm = ww.make_consistent(wit_graphs+worm_graphs)
     wit_graphs = wit_worm[:len(wit_graphs)]
     return wit_graphs
-  
-graphs = witvilet2020()
-print(graphs)
