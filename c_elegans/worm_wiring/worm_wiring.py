@@ -364,7 +364,7 @@ def extract_filedata(dfs, df_type):
             if df_type != 'syn_list':
                 if i % num_sex == 0:
                     g.graph['Synapse Type'] = "Chemical"
-                if df_type in {'connectome', 'cellclass_connectome'}:
+                elif df_type in {'connectome', 'cellclass_connectome'}:
                     if i == 1 or i == 4:
                         g.graph['Synapse Type'] = "Asymmetric Gap Junction"
                     else:
