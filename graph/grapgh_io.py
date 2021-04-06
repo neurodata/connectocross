@@ -69,17 +69,17 @@ class GraphIO:
         """
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
         """
-        if all([type(g) is nx.Graph for g in graphs]):
-            multi_graph = nx.MultiGraph
-        elif all([type(g) is nx.DiGraph for g in graphs]):
-            multi_graph = nx.MultiDiGraph
+        if False not in [type(g) is nx.Graph for g in graphs]:
+            multi_graph = nx.MultiGraph()
+        elif False not in [type(g) is nx.DiGraph for g in graphs]:
+            multi_graph = nx.MultiDiGraph()
         else:
             raise TypeError
-        nodes = [set(g.nodes(data=True)) for g in graphs]
-        nodes = set.union(*nodes)
-        multi_graph.add_nodes_from(nodes)
         for i, g in enumerate(graphs):
+            nodes = g.nodes(data=True)
             for source, target, data in g.edges(data=True):
+                multi_graph.add_node(source, attr_dict=nodes[source])
+                multi_graph.add_node(target, attr_dict=nodes[target])
                 multi_graph.add_edge(source, target, key=i, attr_dict=data)
         return multi_graph
 
