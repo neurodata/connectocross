@@ -117,7 +117,7 @@ class GraphIO:
         node_out = []
         edge_out = []
         if type(graph) in [nx.MultiGraph, nx.MultiDiGraph]:
-            graph = cls.multigraph_to_list(graph)
+            graph = cls.multigraph_to_graphs(graph)
         else:
             graph = [graph]
 
