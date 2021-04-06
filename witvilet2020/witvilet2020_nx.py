@@ -13,10 +13,7 @@ import requests
 import json
 import pandas as pd
 import networkx as nx
-import matplotlib.pyplot as plt
-import os
 from worm_wiring import worm_wiring as ww
-from networkx.readwrite import json_graph as jg
 from load_worm_nx import load_worm_nx
 
 def read_graph(base_url, name):
@@ -25,14 +22,14 @@ def read_graph(base_url, name):
     json_graph = r.content
     json_graph = json.loads(json_graph)
     edgelist = pd.DataFrame(json_graph)
-    edgelist["weight"] = edgelist["synapses"]
+    edgelist = edgelist.rename(columns={"synapses":"weight", "type":"synapse_type"})
     graph = nx.from_pandas_edgelist(
         edgelist,
         source="pre",
         target="post",
-        edge_attr=True,
+        edge_attr=["synapse_type", "weight"],
         create_using=nx.MultiDiGraph,
-    )
+    )    
     og_id2id = {}
     for node in graph.nodes:
         if node[:3] == "BWM": #convert ID to worm_wiring form 
@@ -51,6 +48,13 @@ def read_graph(base_url, name):
 
 def load_witvilet_2020(datasets, base_url):
     graphs = [read_graph(base_url, d) for d in datasets]
+    microscopies = ["sem", "tem", "sem", "sem", "sem", "tem", "tem", "sem"]
+    ages = [0, 5, 8, 16, 23, 27, 45, 45]
+    dev_stages = ["L1", "L1", "L1", "L1", "L2", "L3", "YA", "YA"]
+    for i, g in enumerate(graphs):
+        g.graph["micrcopy_method"] = microscopies[i]
+        g.graph["age"] = ages[i]
+        g.graph["developmental_stage"] = dev_stages[i]
     return graphs
 
 def witvilet2020_nx():
@@ -61,3 +65,6 @@ def witvilet2020_nx():
     wit_worm = ww.make_consistent(wit_graphs+worm_graphs)
     wit_graphs = wit_worm[:len(wit_graphs)]
     return wit_graphs
+
+graphs = witvilet2020_nx()
+print(graphs)

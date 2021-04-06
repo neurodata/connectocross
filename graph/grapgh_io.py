@@ -1,9 +1,10 @@
 import itertools
 import json
 import os
+import sys
 import re
 import shutil
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict, Hashable
 
 import networkx as nx
 import numpy as np
@@ -12,283 +13,196 @@ import pandas as pd
 
 class GraphIO:
     """
-    Class for IO with networkx `Graph` or `DiGraph` objects. Provides methods for writing to / loading from file.
-    Limitations - networkx graph's nodes must be either int or string. Multigraphs are represented as lists of
-    graphs.
+    Class for IO with networkx `Graph`,  `DiGraph`, `MultiGraph`, or `MultiDiGraph` objects. Provides functions for
+    writing to / loading from JSON file, as well as for converting to other graph representations.
     """
 
     @staticmethod
-    def _serializable_atts(atts: dict) -> dict:
-        new_dict = dict()
-        for key in list(atts.keys()):
-            new_dict[str(key)] = atts[key]
-        return new_dict
-
-    @staticmethod
-    def _get_att_from_json(json_path: str, evaluate_keys=False) -> dict:
-        raw_att = json.load(open(json_path, "r"))
-        if not evaluate_keys:
-            return raw_att
-        new_dict = dict()
-        for key in list(raw_att.keys()):
-            if type(key) is str:
-                new_key = eval(key)
-                new_dict[new_key] = raw_att[key]
-            else:
-                raise IOError("Not able to evaluate json.")
-        return new_dict
-
-    @staticmethod
-    def _read_edgelist(graph_dir: str,
-                       create_using=nx.Graph) -> Union[nx.Graph, nx.DiGraph]:
-<<<<<<< HEAD
-        path = os.path.join(graph_dir, 'edgelist.csv')
-=======
-        if os.path.isfile(os.path.join(graph_dir, 'edgelist.csv')):
-            path = os.path.join(graph_dir, 'edgelist.csv')
-        elif os.path.isfile(os.path.join(graph_dir, 'edgelist.symlink')):
-            path = os.readlink(os.path.join(graph_dir, 'edgelist.symlink'))
-        else:
-            raise IOError("MGraph must contain an edgelist in each graph directory")
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
-        try:
-            g = nx.readwrite.read_weighted_edgelist(path,
-                                                    create_using=create_using,
-                                                    delimiter=',')
-        except (ValueError, TypeError):
-            g = nx.readwrite.read_edgelist(path, create_using=create_using,
-                                           data=False,
-                                           delimiter=',')
-        return g
-
-
-    @staticmethod
-    def n_map(x: str):
-        if type(x) is int or type(x) is float:
-            return x
-        if type(x) is str and x.isnumeric():
-            try:
-                x = int(x)
-            except TypeError:
-                x = float(x)
-        return x
-
-    @classmethod
-    def _gen_graph(cls, graph_dir: str) -> Union[nx.Graph, nx.DiGraph]:
-        try:
-            with open(os.path.join(graph_dir, 'graphatt_isDirected.json'), 'r') as f:
-                line = f.readline()
-                if 'true' in line:
-                    g = cls._read_edgelist(graph_dir, create_using=nx.DiGraph)
-                elif 'false' in line:
-                    g = cls._read_edgelist(graph_dir, create_using=nx.Graph)
-                else:
-                    raise IOError("Reserved graph attribute isDirected is corrupted.")
-        except FileNotFoundError:
-            raise IOError("isDirected graph attribute must exist and be set.")
-        # convert any string representations of number
-        g = nx.relabel_nodes(g, cls.n_map)
-        return g
-
-    @staticmethod
-    def infer_edge_attributes(graphs: List[Union[nx.Graph, nx.DiGraph]]):
+    def infer_edge_attributes(graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph]):
         # find edge attributes names if not provided.
-        edge_att_names = []
-        for graph in graphs:
-            edge_att_names.append(
-                set(itertools.chain(*[list(graph.edges[n].keys()) for n in graph.edges()]))
-            )
+        if type(graph) in [nx.MultiDiGraph, nx.MultiGraph]:
+            edge_att_names = set(itertools.chain(*[list(graph.edges[n].keys()) for n in graph.edges(keys=True)]))
+        else:
+            edge_att_names = set(itertools.chain(*[list(graph.edges[n].keys()) for n in graph.edges()]))
         return edge_att_names
 
     @staticmethod
-    def infer_node_attributes(graphs: List[Union[nx.Graph, nx.DiGraph]]):
+    def infer_node_attributes(graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph]):
         # find edge attributes names if not provided.
-        node_att_names = []
-        for graph in graphs:
-            node_att_names.append(
-                set(itertools.chain(*[list(graph.nodes[n].keys()) for n in graph.nodes()]))
-            )
+        node_att_names = set(itertools.chain(*[list(graph.nodes[n].keys()) for n in graph.nodes()]))
         return node_att_names
 
     @staticmethod
-    def infer_graph_attributes(graphs: List[Union[nx.Graph, nx.DiGraph]]):
-        # find graph attributes names if not provided.
-        graph_att_names = []
-        for graph in graphs:
-            graph_att_names.append(
-                set(graph.graph.keys())
-            )
+    def infer_graph_attributes(graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph]):
+        graph_att_names = set(graph.graph.keys())
         return graph_att_names
 
-<<<<<<< HEAD
-
-    @classmethod
-    def dump(cls,
-             graph: List[Union[nx.Graph, nx.DiGraph]],
-=======
     @staticmethod
-    def convert_multigraph(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+    def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+        """
+        Get a list of graphs specified by this multigraph.
+        """
+        if type(mg) is nx.MultiGraph:
+            g_class = nx.Graph
+        elif type(mg) is nx.MultiDiGraph:
+            g_class = nx.DiGraph
+        else:
+            raise TypeError("Must give a MultiGraph or MultiDiGraph to convert_multigraph")
         key_map = {}
         graphs = []
         for edge in mg.edges(data=True, keys=True):
-            link = tuple(edge[0][:2])
-            key = edge[0][2]
-            data = edge[1]
+            link = tuple(edge[:2])
+            key = edge[2]
+            data = edge[3]
             if key not in key_map:
-                graphs.append(nx.DiGraph())
+                graphs.append(g_class())
                 graphs[-1].add_nodes_from(mg.nodes(data=True))
                 key_map[key] = len(graphs) - 1
             ind = key_map[key]
             graphs[ind].add_edge(link[0], link[1])
             for key in data:
-                graphs[ind].edges(link)[key] = data[key]
+                graphs[ind].edges[link][key] = data[key]
         return graphs
+
+    @staticmethod
+    def graphs_to_multigraph(graphs: Union[List[Union[nx.Graph, nx.DiGraph]],
+                                           Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
+                             ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+        """
+        Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
+        """
+        if type(graphs) is list or type(graphs) is tuple:
+            itr = list(enumerate(graphs))
+        elif type(graphs) is dict:
+            itr = list(graphs.items())
+        else:
+            raise TypeError("Must pass list or dictionary of Graphs")
+        if False not in [type(g) is nx.Graph for _, g in itr]:
+            multi_graph = nx.MultiGraph()
+        elif False not in [type(g) is nx.DiGraph for _, g in itr]:
+            multi_graph = nx.MultiDiGraph()
+        else:
+            raise TypeError("Iterable must contain networkx Graph or DiGraph.")
+        for i, g in itr:
+            nodes = g.nodes(data=True)
+            for source, target, data in g.edges(data=True):
+                multi_graph.add_nodes_from([(source, nodes[source])])
+                multi_graph.add_nodes_from([(target, nodes[target])])
+                multi_graph.add_edges_from([(source, target, i, data)])
+        return multi_graph
+
+    @classmethod
+    def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
+        """
+        Get the graph as an adjacency matrix, a list of node attribute DataFrames, and a list of edge attribute
+        DataFrames. If a multigraph is passed, it will be converted to a list of graphs, and a list of each of those
+        will be returned. Node labels are added to the node attribute DataFrame with attribute name
+        `original_node_label`
+
+        :param graph: nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph
+
+        :return: If a Graph or Digraph is given:
+                    return Tuple[adjacency: ndarray,
+                                node_attributes: DataFrame,
+                                edge_attributes: DataFrame]
+
+                 If a MultiGraph or MultiDiGraph is given:
+                    return Tuple[List[adjacency: ndarray, ...],
+                                List[node_attributes: DataFrame, ...],
+                                List[edge_attributes: DataFrame, ...]]
+
+                node labels are added to the node_attribute DataFrame with attribute name `original_node_label`
+        """
+        adj_out = []
+        node_out = []
+        edge_out = []
+        if type(graph) in [nx.MultiGraph, nx.MultiDiGraph]:
+            graph = cls.multigraph_to_graphs(graph)
+        else:
+            graph = [graph]
+
+        for g in graph:
+            np_adj = nx.to_numpy_matrix(g, weight='weight')
+            adj_out.append(np_adj)
+            ids = g.nodes()
+            g = nx.convert_node_labels_to_integers(g)
+            edge_data = g.edges(data=True)
+            edge_data = {tuple(e[:2]): e[2] for e in edge_data}
+            node_data = g.nodes(data=True)
+            node_data = {n[0]: n[1] for n in node_data}
+            for i, n in enumerate(ids):
+                node_data[i]['original_node_label'] = n
+            node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
+            edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
+
+        if len(adj_out) == 1:
+            return adj_out[0], node_out[0], edge_out[0]
+        else:
+            return adj_out, node_out, edge_out
 
     @classmethod
     def dump(cls,
-             graph: List[Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph]],
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
-             path: str, edge_att_names: List[set] = None,
-             node_att_names: List[set] = None,
-             graph_att_names: List[set] = None):
+             graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph],
+             path: str):
         """
         Write graph to disk at specified path.
         :param graph: the graph or list of graphs to dump
         :param path: path to write to, without extension
-        :param edge_att_names: optional, provide edge attribute names to dump, else will infer
-        :param node_att_names: optional, provide node attribute names to dump, else will infer
-        :param graph_att_names: optional, provide graph attribute names to dump, else will infer
         :return: None
         """
-<<<<<<< HEAD
-=======
-        if type(graph) is nx.MultiDiGraph:
-            graph = cls.convert_multigraph(graph)
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
 
-        uuid = "{:4}".format(np.random.randint(0, 9999))
-        tmpdir = "./tmp" + uuid
-        os.mkdir(tmpdir)
-        if edge_att_names is None:
-            edge_att_names = cls.infer_edge_attributes(graph)
-        if node_att_names is None:
-            node_att_names = cls.infer_node_attributes(graph)
-        if graph_att_names is None:
-            graph_att_names = cls.infer_graph_attributes(graph)
+        node_att_names = cls.infer_node_attributes(graph)
+        edge_att_names = cls.infer_edge_attributes(graph)
+        graph_att_names = cls.infer_graph_attributes(graph)
+        all_att = node_att_names | edge_att_names | graph_att_names
+        reserved = {'id', 'source', 'target', 'key'}
 
-        for i, g in enumerate(graph):
-            gpath = os.path.join(tmpdir, "graph_" + str(i))
-            os.mkdir(gpath)
-            if 'weight' in edge_att_names[i]:
-                nx.readwrite.write_weighted_edgelist(g,
-                                                     os.path.join(gpath, "edgelist.csv"),
-                                                     delimiter=',')
-            else:
-                nx.readwrite.write_edgelist(g,
-                                            os.path.join(gpath, "edgelist.csv"),
-                                            data=False,
-                                            delimiter=',')
-            for n_att in node_att_names[i]:
-                ndict = nx.get_node_attributes(g, n_att)
-                json.dump(
-                    ndict, open(os.path.join(gpath, "nodeatt_" + n_att + ".json"), "w")
-                )
-            for e_att in edge_att_names[i]:
-                if e_att == 'weight':
-                    continue
-                edict = cls._serializable_atts(nx.get_edge_attributes(g, e_att))
-                json.dump(
-                    edict, open(os.path.join(gpath, "edgeatt_" + e_att + ".json"), "w")
-                )
-            for g_att in graph_att_names[i]:
-                g_val = g.graph[g_att]
-                json.dump(
-                    g_val, open(os.path.join(gpath, "graphatt_" + g_att + ".json"), "w")
-                )
-            # add required isDirected graph attribute
-            json.dump(
-                (type(g) is nx.DiGraph),
-                open(os.path.join(gpath, "graphatt_isDirected.json"), "w")
-            )
-        shutil.make_archive(
-            base_name=path, format="zip", root_dir=tmpdir, base_dir="./"
-        )
-        os.rename(path + '.zip', path)
-        shutil.rmtree(tmpdir)
+        if len(reserved.intersection(all_att)) > 0:
+            raise KeyError("Keywords id, source, target, and key are reserved in this format. Any attributes using "
+                           "these keywords must be renamed")
+
+        if False in [type(n) == str for n in all_att]:
+            print("WARNING: Non-string attribute names detected. "
+                  "These will be converted to strings for json compliance", sys.stderr)
+        try:
+            node_link = nx.readwrite.node_link_data(graph)
+        except nx.NetworkXError:
+            raise KeyError("Node link map is corrupted")
+
+        with open(path, 'w') as f:
+            json.dump(node_link, f)
 
     @classmethod
-    def load(cls, path: str) -> Tuple[List[Union[nx.Graph, nx.DiGraph]],
-                                       List[set],
-                                       List[set],
-                                       List[set]]:
+    def load(cls, path: str) -> Tuple[Union[nx.Graph, nx.DiGraph], set, set, set]:
         """
         load metagraph from disk.
         :param path: location of graph file.
 
         :return (graph object, edge attributes, node attributes, graph attributes)
         """
-        uuid = "{:4}".format(np.random.randint(0, 9999))
-        tmpdir = "./tmp" + uuid
-        os.mkdir(tmpdir)
+        with open(path, 'r') as f:
+            data_dict = json.load(f)
 
         try:
-            shutil.unpack_archive(filename=path, extract_dir=tmpdir, format="zip")
-        except Exception:
-            raise IOError("Failed to read graph from disk.")
+            graph = nx.readwrite.node_link_graph(data_dict)
+        except nx.NetworkXError:
+            raise IOError("Unable to graph. Make sure the file is not corrupted, and"
+                          "uses the standard source, target, id, and key field names")
 
-        # to return attribute names.
-        e_att_names = []
-        n_att_names = []
-        g_att_names = []
+        e_att_names = cls.infer_edge_attributes(graph)
+        n_att_names = cls.infer_node_attributes(graph)
+        g_att_names = cls.infer_graph_attributes(graph)
 
-        # to hold graphs
-        graphs = []
+        return graph, e_att_names, n_att_names, g_att_names
 
-        # be sure we read graphs in order
-        for graph_dir in sorted(os.listdir(tmpdir)):
-            g = cls._gen_graph(os.path.join(tmpdir, graph_dir))
-            e_att_names.append(set())
-            n_att_names.append(set())
-            g_att_names.append(set())
-            for file in os.listdir(os.path.join(tmpdir, graph_dir)):
-                if file != "edgelist.csv":
-<<<<<<< HEAD
-                    attname = re.split("_|\.", file)[1]
-                    if "edgeatt" in file:
-                        att = cls._get_att_from_json(
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=True
-=======
-                    attname = ''.join(re.split("_|\.", file)[1:-1])
-                    fpath = os.path.join(tmpdir, graph_dir, file)
-                    if '.symlink' in file:
-                        fpath = os.readlink(fpath)
-                    if "edgeatt" in file:
-                        att = cls._get_att_from_json(
-                            fpath, evaluate_keys=True
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
-                        )
-                        nx.set_edge_attributes(g, att, attname)
-                        e_att_names[-1].add(attname)
-                    elif "nodeatt" in file:
-                        att = cls._get_att_from_json(
-<<<<<<< HEAD
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=True
-=======
-                            fpath, evaluate_keys=True
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
-                        )
-                        nx.set_node_attributes(g, att, attname)
-                        n_att_names[-1].add(attname)
-                    elif "graphatt" in file:
-                        att = cls._get_att_from_json(
-<<<<<<< HEAD
-                            os.path.join(tmpdir, graph_dir, file), evaluate_keys=False
-=======
-                            fpath, evaluate_keys=False
->>>>>>> 7b2e1195b2a0204f4e793d164e62ef246ae3605f
-                        )
-                        g.graph[attname] = att
-                        g_att_names[-1].add(attname)
-            graphs.append(g)
-        shutil.rmtree(tmpdir)
-        return graphs, e_att_names, n_att_names, g_att_names
+
+if __name__ == '__main__':
+    g = nx.generators.star_graph(10)
+    bb = nx.betweenness_centrality(g)
+    nx.set_node_attributes(g, bb, "betweenness")
+    att = {(0, 1): "red",
+           (0, 2): "blue",
+           (0, 5): "red",
+           (0, 8): "blue"}
+    nx.set_edge_attributes(g, att, "color")
+    adj, node, edge = GraphIO.get_adjacency_representation(g)

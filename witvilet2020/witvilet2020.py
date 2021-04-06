@@ -13,69 +13,63 @@ import requests
 import json
 import pandas as pd
 import networkx as nx
-import matplotlib.pyplot as plt
-import os
-from worm_wiring import worm_wiring as ww
+import worm_wiring as ww
+from worm_wiring import worm_wiring as ww, import load_worm as lw
 from graph import GraphIO
 
 base_url = "http://nemanode.org/api/download-connectivity?datasetId=witvliet_2020_{}"
 datasets = list(range(1, 9))
 
 
-def read_graph(name):
+def read_graph(base_url, name):
     url = base_url.format(name)
     r = requests.get(url)
     json_graph = r.content
     json_graph = json.loads(json_graph)
     edgelist = pd.DataFrame(json_graph)
-    edgelist["weight"] = edgelist["synapses"]
+    edgelist = edgelist.rename(columns={"synapses":"weight", "type":"synapse_type"})
     graph = nx.from_pandas_edgelist(
         edgelist,
         source="pre",
         target="post",
-        edge_attr=True,
+        edge_attr=["synapse_type", "weight"],
         create_using=nx.MultiDiGraph,
     )
+    og_id2id = {}
     for node in graph.nodes:
         if node[:3] == "BWM": #convert ID to worm_wiring form 
             ID = node[4].lower() + "BWM" + node[5] + str(int(node[6:]))
         else:
             ID = node
-        graph.nodes[node]['ID'] = ID
+        og_id2id[node] = ID
+        graph.nodes[node]['original_id'] = node
         graph.nodes[node]['cell_type0'] = None
         graph.nodes[node]['cell_type1'] = None
-        graph.nodes[node]['Hemisphere'] = None
+        graph.nodes[node]['hemisphere'] = None
+        graph.nodes[node]['dorsoventral'] = None
+    graph = nx.relabel.relabel_nodes(graph, og_id2id)
     return graph
 
 
-def load_witvilet_2020():
-    graphs = [read_graph(d) for d in datasets]
+def load_witvilet_2020(datasets, base_url):
+    graphs = [read_graph(base_url, d) for d in datasets]
+    microscopies = ["sem", "tem", "sem", "sem", "sem", "tem", "tem", "sem"]
+    ages = [0, 5, 8, 16, 23, 27, 45, 45]
+    dev_stages = ["L1", "L1", "L1", "L1", "L2", "L3", "YA", "YA"]
+    for i, g in enumerate(graphs):
+        g.graph["micrcopy_method"] = microscopies[i]
+        g.graph["age"] = ages[i]
+        g.graph["developmental_stage"] = dev_stages[i]
     return graphs
 
-worm_graphs = []
-base_path = "./worm_wiring/graphs"
-for graph_folder in os.listdir(base_path):
-    if graph_folder.startswith("."):
-        continue
-    graph_folder_path = base_path+"/"+graph_folder
-    for graph_file in os.listdir(graph_folder_path):
-        graph_file_path = graph_folder_path+"/"+graph_file
-        graph, _, _, _ = GraphIO.load(graph_file_path)
-        worm_graphs += graph
+def witvilet2020():
+    base_url = "http://nemanode.org/api/download-connectivity?datasetId=witvliet_2020_{}"
+    datasets = list(range(1, 9))
+    worm_graphs = lw.load_worm()
+    wit_graphs = load_witvilet_2020(datasets, base_url)
+    wit_worm = ww.make_consistent(wit_graphs+worm_graphs)
+    wit_graphs = wit_worm[:len(wit_graphs)]
+    return wit_graphs
   
-#ww_worm_graphs = ww.worm_wiring()
-
-wit_graphs = load_witvilet_2020()
-wit_worm = ww.make_consistent(wit_graphs+worm_graphs)
-wit_graphs = wit_worm[:len(wit_graphs)]
-
-print("worm_graphs[0] = ")
-print(worm_graphs[0].nodes.data())
-print("wit_graphs[0] = ")
-print(wit_graphs[0].nodes.data())
-
-for g in wit_graphs:
-    plt.figure()
-    nx.draw(g)
-    print(g.graph)
-    print(g.nodes.data())
+graphs = witvilet2020()
+print(graphs)
