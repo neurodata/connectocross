@@ -4,7 +4,7 @@ import os
 import sys
 import re
 import shutil
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict, Hashable
 
 import networkx as nx
 import numpy as np
@@ -38,7 +38,7 @@ class GraphIO:
         return graph_att_names
 
     @staticmethod
-    def multigraph_to_list(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+    def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
         """
         Get a list of graphs specified by this multigraph.
         """
@@ -65,21 +65,29 @@ class GraphIO:
         return graphs
 
     @staticmethod
-    def list_to_multigraph(graphs: List[Union[nx.Graph, nx.DiGraph]]) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+    def graphs_to_multigraph(graphs: Union[List[Union[nx.Graph, nx.DiGraph]],
+                                         Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
+                           ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
         """
-        if all([type(g) is nx.Graph for g in graphs]):
-            multi_graph = nx.MultiGraph
-        elif all([type(g) is nx.DiGraph for g in graphs]):
-            multi_graph = nx.MultiDiGraph
+        if type(graphs) is list:
+            itr = enumerate(list)
+        elif type(graphs) is dict:
+            itr = list(graphs.items())
         else:
-            raise TypeError
-        nodes = [set(g.nodes(data=True)) for g in graphs]
-        nodes = set.union(*nodes)
-        multi_graph.add_nodes_from(nodes)
-        for i, g in enumerate(graphs):
+            raise TypeError("Must pass list or dictionary of Graphs")
+        if False not in [type(g) is nx.Graph for _, g in itr]:
+            multi_graph = nx.MultiGraph()
+        elif False not in [type(g) is nx.DiGraph for _, g in itr]:
+            multi_graph = nx.MultiDiGraph()
+        else:
+            raise TypeError("Iterable must contain networkx Graph or DiGraph.")
+        for i, g in itr:
+            nodes = g.nodes(data=True)
             for source, target, data in g.edges(data=True):
+                multi_graph.add_node(source, attr_dict=nodes[source])
+                multi_graph.add_node(target, attr_dict=nodes[target])
                 multi_graph.add_edge(source, target, key=i, attr_dict=data)
         return multi_graph
 
