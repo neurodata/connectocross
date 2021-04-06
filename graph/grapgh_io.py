@@ -72,7 +72,7 @@ class GraphIO:
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
         """
         if type(graphs) is list or type(graphs) is tuple:
-            itr = enumerate(list)
+            itr = enumerate(graphs)
         elif type(graphs) is dict:
             itr = list(graphs.items())
         else:
