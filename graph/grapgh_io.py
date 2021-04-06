@@ -66,12 +66,12 @@ class GraphIO:
 
     @staticmethod
     def graphs_to_multigraph(graphs: Union[List[Union[nx.Graph, nx.DiGraph]],
-                                         Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
-                           ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+                                           Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
+                             ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
         """
-        if type(graphs) is list:
+        if type(graphs) is list or type(graphs) is tuple:
             itr = enumerate(list)
         elif type(graphs) is dict:
             itr = list(graphs.items())
@@ -90,7 +90,6 @@ class GraphIO:
                 multi_graph.add_node(target, attr_dict=nodes[target])
                 multi_graph.add_edge(source, target, key=i, attr_dict=data)
         return multi_graph
-
 
     @classmethod
     def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
