@@ -4,7 +4,7 @@ import os
 import sys
 import re
 import shutil
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict, Hashable
 
 import networkx as nx
 import numpy as np
@@ -38,7 +38,7 @@ class GraphIO:
         return graph_att_names
 
     @staticmethod
-    def multigraph_to_list(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+    def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
         """
         Get a list of graphs specified by this multigraph.
         """
@@ -63,6 +63,33 @@ class GraphIO:
             for key in data:
                 graphs[ind].edges[link][key] = data[key]
         return graphs
+
+    @staticmethod
+    def graphs_to_multigraph(graphs: Union[List[Union[nx.Graph, nx.DiGraph]],
+                                           Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
+                             ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+        """
+        Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
+        """
+        if type(graphs) is list or type(graphs) is tuple:
+            itr = list(enumerate(graphs))
+        elif type(graphs) is dict:
+            itr = list(graphs.items())
+        else:
+            raise TypeError("Must pass list or dictionary of Graphs")
+        if False not in [type(g) is nx.Graph for _, g in itr]:
+            multi_graph = nx.MultiGraph()
+        elif False not in [type(g) is nx.DiGraph for _, g in itr]:
+            multi_graph = nx.MultiDiGraph()
+        else:
+            raise TypeError("Iterable must contain networkx Graph or DiGraph.")
+        for i, g in itr:
+            nodes = g.nodes(data=True)
+            for source, target, data in g.edges(data=True):
+                multi_graph.add_node(source, attr_dict=nodes[source])
+                multi_graph.add_node(target, attr_dict=nodes[target])
+                multi_graph.add_edge(source, target, key=i, attr_dict=data)
+        return multi_graph
 
     @classmethod
     def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
@@ -90,7 +117,7 @@ class GraphIO:
         node_out = []
         edge_out = []
         if type(graph) in [nx.MultiGraph, nx.MultiDiGraph]:
-            graph = cls.multigraph_to_list(graph)
+            graph = cls.multigraph_to_graphs(graph)
         else:
             graph = [graph]
 
@@ -103,7 +130,7 @@ class GraphIO:
             edge_data = {tuple(e[:2]): e[2] for e in edge_data}
             node_data = g.nodes(data=True)
             node_data = {n[0]: n[1] for n in node_data}
-            for n, i in enumerate(ids):
+            for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
             node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
             edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
