@@ -101,27 +101,25 @@ def make_consistent(graphs):
     ids = set()
     for g in graphs:
         for node in g.nodes:
-            ids.add(g.nodes[node]['ID'])
+            ids.add(node)
             
     for i in range(len(graphs)):
         for j in range(i+1, len(graphs)):
             g1 = graphs[i]
             g2 = graphs[j]
-            id2nodenum = ({g1.nodes[k]['ID']:k for k in range(len(g1.nodes))},
-                          {g2.nodes[k]['ID']:k for k in range(len(g2.nodes))})
-            meta_fields = ['cell_type0', 'cell_type1']
+            meta_fields = ['cell_type0', 'cell_type1', 'hemisphere', 'dorsoventral']
             for meta in meta_fields:
                 for ID in ids:
                     try:
-                        g1_meta = g1.nodes[id2nodenum[0][ID]][meta]
-                        g2_meta = g2.nodes[id2nodenum[1][ID]][meta]
+                        g1_meta = g1.nodes[ID][meta]
+                        g2_meta = g2.nodes[ID][meta]
                     except KeyError: #ID not present in one of the graphs
                         continue
                     if(g1_meta != g2_meta):
                         if(g1_meta == None):
-                            graphs[i].nodes[id2nodenum[0][ID]][meta] = g2_meta
+                            graphs[i].nodes[ID][meta] = g2_meta
                         else:
-                            graphs[j].nodes[id2nodenum[1][ID]][meta] = g1_meta
+                            graphs[j].nodes[ID][meta] = g1_meta
                         
     return graphs
 
@@ -135,13 +133,12 @@ def extract_listdata(df):
     post4_ids = df.iloc[1:, 10]
     unique_ids = list(pd.concat((pre_ids, post1_ids, post2_ids, post3_ids, post4_ids)).dropna().unique())
     unique_pre_ids = list(pre_ids.unique())
-    id2node = {unique_ids[i]:i for i in range(len(unique_ids))}
     pre_ids = pd.Series(pre_ids.index.values, index=pre_ids) #flips pre_ids series so that each ID looks up a series of corresponding dataframe indices
     syn_ids = set()
     
     #Graph
     G = nx.MultiDiGraph()
-    G.add_nodes_from(range(len(unique_ids)))
+    G.add_nodes_from(unique_ids)
     for pre_id in unique_pre_ids:
         indices = pd.Series(pre_ids[pre_id]).values
         for idx in indices:
@@ -155,7 +152,7 @@ def extract_listdata(df):
                 EMseries += "+"
             syn_ids.add((continNum, EMseries))
             try:
-                G.add_edge(id2node[pre_id], id2node[post1_id], key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                G.add_edge(pre_id, post1_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
             except KeyError:
                 if(np.isnan(post1_id)): #known missing data
                     continue
@@ -165,14 +162,14 @@ def extract_listdata(df):
                     raise KeyError
             if partner_num >= 2:
                 post2_id = df.iat[idx, 8]
-                G.add_edge(id2node[pre_id], id2node[post2_id], key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                G.add_edge(pre_id, post2_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
                 if partner_num >= 3:
                     post3_id = df.iat[idx, 9]
-                    G.add_edge(id2node[pre_id], id2node[post3_id], key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                    G.add_edge(pre_id, post3_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
                     if partner_num >= 4:
                         post4_id = df.iat[idx, 10]
                         try:
-                            G.add_edge(id2node[pre_id], id2node[post4_id], key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                            G.add_edge(pre_id, post4_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
                         except KeyError:
                             if(partner_num==5 or partner_num==6 or partner_num==9): #known typos
                                 continue
@@ -181,22 +178,53 @@ def extract_listdata(df):
                                 print("idx=", idx)
                                 raise KeyError
     #Metadata
-    for i in range(len(unique_ids)):
-        G.nodes[i]['ID'] = unique_ids[i]
-        if(unique_ids[i][-1]=='L'):
-            G.nodes[i]['Hemisphere'] = 'Left'
-        elif(unique_ids[i][-1]=='R'):
-            G.nodes[i]['Hemisphere'] = 'Right'
+    for ID in unique_ids:
+        G.nodes[ID]['original_id'] = ID
+        
+        j = 0
+        while(ord(ID[-1-j]) >= 48 and ord(ID[-1-j]) <= 57): #last character is a digit 0-9
+            j += 1
+            
+        if(ID[-1-j]=='L'):
+            G.nodes[ID]['hemisphere'] = 'left'
+            try:
+                if(ID[-1-j-1]=='D' or ID[0]=='d'):
+                    G.nodes[ID]['dorsoventral'] = 'dorsal'
+                elif(ID[-1-j-1]=='V' or ID[0]=='v'):
+                    G.nodes[ID]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[ID]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[ID]['dorsoventral'] = None
+                
+        elif(ID[-1-j]=='R'):
+            G.nodes[ID]['hemisphere'] = 'right'
+            
+            try:
+                if(ID[-1-j-1]=='D' or ID[0]=='d'):
+                    G.nodes[ID]['dorsoventral'] = 'dorsal'
+                elif(ID[-1-j-1]=='V' or ID[0]=='v'):
+                    G.nodes[ID]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[ID]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[ID]['dorsoventral'] = None
+        
+        elif(ID[-1-j]=='D'):
+            G.nodes[ID]['dorsoventral'] = 'dorsal'
+        elif(ID[-1-j]=='V'):
+            G.nodes[ID]['dorsoventral'] = 'ventral'
         else:
-            G.nodes[i]['Hemisphere'] = None
+            G.nodes[ID]['hemisphere'] = None
+            G.nodes[ID]['dorsoventral'] = None
         try: #using rows (column of IDs)
-            G.nodes[i]['cell_type0'] = None
+            G.nodes[ID]['cell_type0'] = None
         except KeyError: #use columns
-            G.nodes[i]['cell_type0'] = None
+            G.nodes[ID]['cell_type0'] = None
         try: #using columns (row of IDs)
-            G.nodes[i]['cell_type1'] = None
+            G.nodes[ID]['cell_type1'] = None
         except KeyError: #use rows
-            G.nodes[i]['cell_type1']  = None
+            G.nodes[ID]['cell_type1']  = None
     return G 
 
 
@@ -223,39 +251,68 @@ def extract_data(df, df_type):
     
     #Graph
     G = nx.DiGraph()
-    G.add_nodes_from(range(len(unique_ids)))
-    for i in range(len(unique_ids)):
-        idi = unique_ids[i]
-        for j in range(len(unique_ids)):
-            idj = unique_ids[j]
+    G.add_nodes_from(unique_ids)
+    for idi in unique_ids:
+        for idj in unique_ids:
             try:
                 edge_weight = df.iat[ids[0][idi], ids[1][idj]]
             except KeyError:
                 continue #skip misssing IDs
             if(not(np.isnan(edge_weight))):
-                    G.add_edge(i, j, weight=edge_weight)
+                    G.add_edge(idi, idj, weight=edge_weight)
 
     #Metadata
-    for i in range(len(unique_ids)):
-        G.nodes[i]['ID'] = unique_ids[i]
-        if(unique_ids[i][-1]=='L'):
-            G.nodes[i]['Hemisphere'] = 'Left'
-        elif(unique_ids[i][-1]=='R'):
-            G.nodes[i]['Hemisphere'] = 'Right'
+    for ID in unique_ids:
+        G.nodes[ID]['original_id'] = ID
+        
+        j = 0
+        while(ord(ID[-1-j]) >= 48 and ord(ID[-1-j]) <= 57): #last character is a digit 0-9
+            j += 1
+            
+        if(ID[-1-j]=='L'):
+            G.nodes[ID]['hemisphere'] = 'left'
+            try:
+                if(ID[-1-j-1]=='D' or ID[0]=='d'):
+                    G.nodes[ID]['dorsoventral'] = 'dorsal'
+                elif(ID[-1-j-1]=='V' or ID[0]=='v'):
+                    G.nodes[ID]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[ID]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[ID]['dorsoventral'] = None
+                
+        elif(ID[-1-j]=='R'):
+            G.nodes[ID]['hemisphere'] = 'right'
+            
+            try:
+                if(ID[-1-j-1]=='D' or ID[0]=='d'):
+                    G.nodes[ID]['dorsoventral'] = 'dorsal'
+                elif(ID[-1-j-1]=='V' or ID[0]=='v'):
+                    G.nodes[ID]['dorsoventral'] = 'ventral'
+                else:
+                    G.nodes[ID]['dorsoventral'] = None
+            except IndexError:
+                G.nodes[ID]['dorsoventral'] = None
+        
+        elif(ID[-1-j]=='D'):
+            G.nodes[ID]['dorsoventral'] = 'dorsal'
+        elif(ID[-1-j]=='V'):
+            G.nodes[ID]['dorsoventral'] = 'ventral'
         else:
-            G.nodes[i]['Hemisphere'] = None
+            G.nodes[ID]['hemisphere'] = None
+            G.nodes[ID]['dorsoventral'] = None
         for cell_idx in range(len(cell_types)):
             cell_type = cell_types[cell_idx]
             try: #using rows (column of IDs)
-                G.nodes[i]["cell_type"+str(cell_idx)] = cell_type[0][ids[0][unique_ids[i]]]
+                G.nodes[ID]["cell_type"+str(cell_idx)] = cell_type[0][ids[0][ID]]
             except KeyError: #use columns
-                G.nodes[i]['cell_type'+str(cell_idx)] = cell_type[1][ids[1][unique_ids[i]]]
+                G.nodes[ID]['cell_type'+str(cell_idx)] = cell_type[1][ids[1][ID]]
         max_start_idx = 3
         for cell_idx in range(max_start_idx - start_idx):
             try: #using rows (column of IDs)
-                G.nodes[i]['cell_type'+str(max_start_idx-cell_idx-2)] = None
+                G.nodes[ID]['cell_type'+str(max_start_idx-cell_idx-2)] = None
             except KeyError: #use columns
-                G.nodes[i]['cell_type'+str(max_start_idx-cell_idx-2)] = None
+                G.nodes[ID]['cell_type'+str(max_start_idx-cell_idx-2)] = None
     return G
 
 def extract_filedata(dfs, df_type):
@@ -307,7 +364,7 @@ def extract_filedata(dfs, df_type):
             if df_type != 'syn_list':
                 if i % num_sex == 0:
                     g.graph['Synapse Type'] = "Chemical"
-                if df_type in {'connectome', 'cellclass_connectome'}:
+                elif df_type in {'connectome', 'cellclass_connectome'}:
                     if i == 1 or i == 4:
                         g.graph['Synapse Type'] = "Asymmetric Gap Junction"
                     else:
