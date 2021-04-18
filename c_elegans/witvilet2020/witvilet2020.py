@@ -58,6 +58,7 @@ def load_witvilet_2020(datasets, base_url):
         g.graph["micrcopy_method"] = microscopies[i]
         g.graph["age"] = ages[i]
         g.graph["developmental_stage"] = dev_stages[i]
+        g.graph["Sex"] = "Hermaphrodite"
     return graphs
 
 def witvilet2020():
