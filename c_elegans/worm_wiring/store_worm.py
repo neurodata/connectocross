@@ -10,7 +10,7 @@ Purpose: Call worm_wiring to obtain graphs,
         and store worm_wiring graphs in file spec using graph_io
 """
 
-from worm_wiring import worm_wiring as ww, validate_worm as vw
+from c_elegans.worm_wiring import worm_wiring as ww, validate_worm as vw
 from graph import GraphIO
 import os
 

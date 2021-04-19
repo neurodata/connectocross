@@ -25,13 +25,6 @@ def load_worm():
             graph_folder_path = os.path.join(file_folder_path, graph_folder)
             for graph_file in os.listdir(graph_folder_path):
                 graph_file_path = os.path.join(graph_folder_path, graph_file)
-                try:
-                    graph, _, _, _ = GraphIO.load(graph_file_path)
-                except TypeError: #to be fixed on GraphIO side
-                    if file_folder == "syn_list":
-                        continue
-                    else:
-                        print("file_folder =", file_folder)
-                        raise TypeError
+                graph, _, _, _ = GraphIO.load(graph_file_path)
                 worm_graphs.append(graph)
     return worm_graphs

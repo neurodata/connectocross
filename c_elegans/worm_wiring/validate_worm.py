@@ -35,84 +35,96 @@ def validate_synlist(dfs, graphs):
             try:
                 post1_node = post1_id
                 edge_id = (pre_node, post1_node)
+                edge_key = "(%s, %s)" % (continNum, EMseries)
                 try:
-                    assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge1 existence validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge1 sections validation" %j
+                    assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge1 existence validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge1 sections validation" %j
                 except AssertionError: #catching duplicates
                     EMseries += "+"
+                    edge_key = "(%s, %s)" % (continNum, EMseries)
                     try:
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge1 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge1 sections validation" %j
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge1 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge1 sections validation" %j
                     except AssertionError: #catching triplicates
                         EMseries += "+"
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge1 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge1 sections validation" %j
+                        edge_key = "(%s, %s)" % (continNum, EMseries)
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge1 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge1 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge1 sections validation" %j
             except AssertionError:
                 assert np.isnan(post1_id), "Index %s failed post1 validation" %j
 
             try:
                 post2_node = post2_id
                 edge_id = (pre_node, post2_node)
+                edge_key = "(%s, %s)" % (continNum, EMseries)
                 try:
-                    assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge2 existence validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge2 sections validation" %j
+                    assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge2 existence validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge2 sections validation" %j
                 except AssertionError:
                     EMseries += "+"
+                    edge_key = "(%s, %s)" % (continNum, EMseries)
                     try:
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge2 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge2 sections validation" %j
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge2 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge2 sections validation" %j
                     except AssertionError:
                         EMseries += "+"
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge2 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge2 sections validation" %j
+                        edge_key = "(%s, %s)" % (continNum, EMseries)
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge2 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge2 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge2 sections validation" %j
             except AssertionError:
                 assert np.isnan(post2_id), "Index %s failed post2 validation" %j
 
             try:
                 post3_node = post3_id
                 edge_id = (pre_node, post3_node)
+                edge_key = "(%s, %s)" % (continNum, EMseries)
                 try:
-                    assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge3 existence validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge3 sections validation" %j
+                    assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge3 existence validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge3 sections validation" %j
                 except AssertionError:
                     EMseries += "+"
+                    edge_key = "(%s, %s)" % (continNum, EMseries)
                     try:
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge3 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge3 sections validation" %j
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge3 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge3 sections validation" %j
                     except AssertionError:
                         EMseries += "+"
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge3 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge3 sections validation" %j
+                        edge_key = "(%s, %s)" % (continNum, EMseries)
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge3 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge3 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge3 sections validation" %j
             except AssertionError:
                 assert np.isnan(post3_id), "Index %s failed post3 validation" %j
 
             try:
                 post4_node = post4_id
                 edge_id = (pre_node, post4_node)
+                edge_key = "(%s, %s)" % (continNum, EMseries)
                 try:
-                    assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge4 existence validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
-                    assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge4 sections validation" %j
+                    assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge4 existence validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
+                    assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge4 sections validation" %j
                 except AssertionError:
                     EMseries += "+"
+                    edge_key = "(%s, %s)" % (continNum, EMseries)
                     try:
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge4 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge4 sections validation" %j
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge4 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge4 sections validation" %j
                     except AssertionError:
                         EMseries += "+"
-                        assert g.has_edge(edge_id[0], edge_id[1], (continNum, EMseries)), "Index %s failed edge4 existence validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
-                        assert g.edges[edge_id[0], edge_id[1], (continNum, EMseries)]["sections"] == sections, "Index %s failed edge4 sections validation" %j
+                        edge_key = "(%s, %s)" % (continNum, EMseries)
+                        assert g.has_edge(edge_id[0], edge_id[1], edge_key), "Index %s failed edge4 existence validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["synapse_type"] == synapse_type, "Index %s failed edge4 synapse_type validation" %j
+                        assert g.edges[edge_id[0], edge_id[1], edge_key]["sections"] == sections, "Index %s failed edge4 sections validation" %j
             except AssertionError:
                 assert np.isnan(post4_id), "Index %s failed post4 validation" %j
 
