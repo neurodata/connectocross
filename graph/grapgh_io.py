@@ -38,9 +38,9 @@ class GraphIO:
         return graph_att_names
 
     @staticmethod
-    def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> List[nx.DiGraph]:
+    def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> Dict[Hashable, Union[nx.Graph, nx.DiGraph]]:
         """
-        Get a list of graphs specified by this multigraph.
+        Get a Dictionary of graphs specified by this multigraph, indexed by the unique edge keys.
         """
         if type(mg) is nx.MultiGraph:
             g_class = nx.Graph
@@ -48,20 +48,17 @@ class GraphIO:
             g_class = nx.DiGraph
         else:
             raise TypeError("Must give a MultiGraph or MultiDiGraph to convert_multigraph")
-        key_map = {}
-        graphs = []
+        graphs = {}
         for edge in mg.edges(data=True, keys=True):
             link = tuple(edge[:2])
             key = edge[2]
             data = edge[3]
-            if key not in key_map:
-                graphs.append(g_class())
-                graphs[-1].add_nodes_from(mg.nodes(data=True))
-                key_map[key] = len(graphs) - 1
-            ind = key_map[key]
-            graphs[ind].add_edge(link[0], link[1])
-            for key in data:
-                graphs[ind].edges[link][key] = data[key]
+            if key not in graphs:
+                graphs[key] = g_class()
+                graphs[key].add_nodes_from(mg.nodes(data=True))
+            graphs[key].add_edge(link[0], link[1])
+            for att_key in data:
+                graphs[key].edges[link][att_key] = data[att_key]
         return graphs
 
     @staticmethod
