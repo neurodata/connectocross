@@ -61,6 +61,40 @@ class GraphIO:
                 graphs[key].edges[link][att_key] = data[att_key]
         return graphs
 
+    @classmethod
+    def flatten_multigraph(cls, mg: Union[nx.MultiDiGraph, nx.MultiGraph], sum_weight=True) -> Union[nx.Graph, nx.DiGraph]:
+        """
+        flattens a multigraph into a single graph
+        :param sum_weight: whether to sum weights of duplicate edges
+        :param mg:
+        :return:
+        """
+        if sum_weight:
+            if type(mg) is nx.MultiGraph:
+                G = nx.Graph()
+            elif type(mg) is nx.MultiDiGraph:
+                G = nx.DiGraph()
+            else:
+                raise TypeError("Must give a MultiGraph or MultiDiGraph to convert_multigraph")
+            G.add_nodes_from(mg.nodes(data=True))
+            for u, v, data in mg.edges(data=True):
+                w = data['weight'] if 'weight' in data else 1.0
+                if G.has_edge(u, v):
+                    G[u][v]['weight'] += w
+                else:
+                    G.add_edge(u, v, weight=w)
+                for att_key in data:
+                    if 'weight' not in att_key:
+                        G[u][v][att_key] = data[att_key]
+        else:
+            if type(mg) is nx.MultiGraph:
+                G = nx.Graph(mg)
+            elif type(mg) is nx.MultiDiGraph:
+                G = nx.DiGraph(mg)
+            else:
+                raise TypeError("Must give a MultiGraph or MultiDiGraph to convert_multigraph")
+        return G
+
     @staticmethod
     def graphs_to_multigraph(graphs: Union[List[Union[nx.Graph, nx.DiGraph]],
                                            Dict[Hashable, Union[nx.Graph, nx.DiGraph]]]
@@ -170,7 +204,7 @@ class GraphIO:
             json.dump(node_link, f)
 
     @classmethod
-    def load(cls, path: str) -> Tuple[Union[nx.Graph, nx.DiGraph], set, set, set]:
+    def load(cls, path: str) -> Tuple[Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph], set, set, set]:
         """
         load metagraph from disk.
         :param path: location of graph file.
