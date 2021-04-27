@@ -14,7 +14,8 @@ from graph import GraphIO
 def load_worm():
     worm_graphs = []
     script_dir = os.path.dirname(__file__)
-    base_path = os.path.join(script_dir, "graphs")
+    base_path = script_dir.split('connectocross')[0]
+    base_path = os.path.join(base_path, "connectocross/json_connectomes/worm_wiring")
     for file_folder in os.listdir(base_path):
         if file_folder.startswith("."):
             continue
@@ -25,13 +26,6 @@ def load_worm():
             graph_folder_path = os.path.join(file_folder_path, graph_folder)
             for graph_file in os.listdir(graph_folder_path):
                 graph_file_path = os.path.join(graph_folder_path, graph_file)
-                try:
-                    graph, _, _, _ = GraphIO.load(graph_file_path)
-                except TypeError: #to be fixed on GraphIO side
-                    if file_folder == "syn_list":
-                        continue
-                    else:
-                        print("file_folder =", file_folder)
-                        raise TypeError
+                graph, _, _, _ = GraphIO.load(graph_file_path)
                 worm_graphs.append(graph)
     return worm_graphs

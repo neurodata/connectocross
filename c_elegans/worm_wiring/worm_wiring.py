@@ -148,11 +148,14 @@ def extract_listdata(df):
             sections = df.iat[idx, 5]
             partner_num = df.iat[idx, 6]
             post1_id = df.iat[idx, 7]
-            while((continNum, EMseries) in syn_ids): #duplicate synapse ID
+            edge_key = "(%s, %s)" % (continNum, EMseries) #using string instead of tuple to avoid json error.
+            while(edge_key in syn_ids): #duplicate synapse ID
                 EMseries += "+"
-            syn_ids.add((continNum, EMseries))
+                edge_key = "(%s, %s)" % (continNum, EMseries)
+            edge_key = "(%s, %s)" % (continNum, EMseries)
+            syn_ids.add(edge_key)
             try:
-                G.add_edge(pre_id, post1_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                G.add_edge(pre_id, post1_id, key=edge_key, sections=sections, synapse_type=synapse_type)
             except KeyError:
                 if(np.isnan(post1_id)): #known missing data
                     continue
@@ -162,14 +165,14 @@ def extract_listdata(df):
                     raise KeyError
             if partner_num >= 2:
                 post2_id = df.iat[idx, 8]
-                G.add_edge(pre_id, post2_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                G.add_edge(pre_id, post2_id, key=edge_key, sections=sections, synapse_type=synapse_type)
                 if partner_num >= 3:
                     post3_id = df.iat[idx, 9]
-                    G.add_edge(pre_id, post3_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                    G.add_edge(pre_id, post3_id, key=edge_key, sections=sections, synapse_type=synapse_type)
                     if partner_num >= 4:
                         post4_id = df.iat[idx, 10]
                         try:
-                            G.add_edge(pre_id, post4_id, key=(continNum, EMseries), sections=sections, synapse_type=synapse_type)
+                            G.add_edge(pre_id, post4_id, key=edge_key, sections=sections, synapse_type=synapse_type)
                         except KeyError:
                             if(partner_num==5 or partner_num==6 or partner_num==9): #known typos
                                 continue
