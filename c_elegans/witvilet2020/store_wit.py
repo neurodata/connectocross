@@ -12,12 +12,14 @@ from graph import GraphIO
 import os
 
 script_dir = os.path.dirname(__file__)
+base_path = script_dir.split("connectocross")[0]
+base_path = os.path.join(base_path, "connectocross/json_connectomes")
 
 print("...Pulling Witvilet2020 Graphs...")
 graphs = wit.witvilet2020()
 
 print("...Storing Graphs...")
 for i, graph in enumerate(graphs):
-    file_path = os.path.join(script_dir, "graphs/%s.json" % i)
+    file_path = os.path.join(base_path, "witvilet/%s.json" % i)
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     GraphIO.dump(graph, file_path)

@@ -23,23 +23,25 @@ vw.validate_worm(file_dfs, graphs)
 
 print("...Storing Graphs...")
 script_dir = os.path.dirname(__file__)
+base_path = script_dir.split("connectocross")[0]
+base_path = os.path.join(base_path, "connectocross/json_connectomes")
 for file in graphs:
     print("file =", file)
     filegraphs = graphs[file]
     if file == 'nerve&ganglion': #nerve&ganglion does not have separate hermaphrodite and male fields
         for i, graph in enumerate(filegraphs[0]):
-            file_path = os.path.join(script_dir, "graphs/%s/Adult/%s.json" % (file, i))
+            file_path = os.path.join(base_path, "worm_wiring/%s/Adult/%s.json" % (file, i))
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             GraphIO.dump(graph, file_path)
         for i, graph in enumerate(filegraphs[1]):
-            file_path = os.path.join(script_dir, "graphs/%s/L4/%s.json" % (file, i))
+            file_path = os.path.join(base_path, "worm_wiring/%s/L4/%s.json" % (file, i))
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             GraphIO.dump(graph, file_path)
     else:
         for sex_graphs in filegraphs:
             sex = sex_graphs[0].graph['Sex']
             for i, sex_graph in enumerate(sex_graphs):
-                file_path = os.path.join(script_dir, "graphs/%s/%s/%s.json" % (file, sex, i))
+                file_path = os.path.join(base_path, "worm_wiring/%s/%s/%s.json" % (file, sex, i))
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 GraphIO.dump(sex_graph, file_path)
     
