@@ -6,3 +6,7 @@
 #   chapters:
 #   - file: outline
 #   - file: introduction
+
+- part: Plotting
+  chapters: 
+  - file: plotting_3d
