@@ -56,14 +56,14 @@ def generate_bic(connectome: nx.DiGraph, single_keys: list, plot_sbms=True):
         if plot_sbms:
             _ = heatmap(adj,
                         inner_hier_labels=node_atts["_group_id"].values,
-                        title="#1 True adjacency " + str(group),
-                        font_scale=1.5,
+                        title="True adjacency " + str(group),
+                        font_scale=.5,
                         sort_nodes=True)
 
             _ = heatmap(estimator.sample()[0],
                         inner_hier_labels=node_atts["_group_id"].values,
-                        title="#1 SBM fit " + str(group),
-                        font_scale=1.5,
+                        title="SBM fit " + str(group),
+                        font_scale=.5,
                         sort_nodes=True)
 
             print(group_map)
