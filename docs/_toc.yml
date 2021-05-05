@@ -8,5 +8,9 @@
 #   - file: introduction
 
 - part: Plotting
-  chapters: 
+  chapters:
   - file: plotting_3d
+
+- part: Analyzing
+  chapters:
+  - file: Modularity
