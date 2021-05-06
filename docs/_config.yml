@@ -33,3 +33,7 @@ sphinx:
 
 execute: 
   execute_notebooks: off # TODO turn back on someday
+
+# Add references
+bibtex_bibfiles:
+    - references.bib
