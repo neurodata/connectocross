@@ -11,7 +11,7 @@ class GraphIO:
     """
     Class for IO with networkx `Graph`,  `DiGraph`, `MultiGraph`, or `MultiDiGraph` objects. Provides functions for
     writing to / loading from JSON file, as well as for converting to other graph representations. The JSON file format
-    used by this Module is described in the `file_spec.pdf` file.
+    used by this Module is compliant with the node-link json format, and is described in the `file_spec.pdf` file.
     """
 
     @staticmethod
@@ -93,11 +93,12 @@ class GraphIO:
     def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
         """
         Get the graph as an adjacency matrix, a list of node attribute DataFrames, and a list of edge attribute
-        DataFrames. If a multigraph is passed, it will be converted to a list of graphs, and a list of each of those
-        will be returned. Node labels are added to the node attribute DataFrame with attribute name
-        `original_node_label`
+        DataFrames. If a multigraph is passed, it will be converted to a dictionary of graphs keyed on edges keys via
+        `GraphIO.multigraph_to_graphs'.
 
-        :param graph: nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph
+        Node labels are added to the node attribute DataFrame with attribute name `original_node_label`
+
+        :param graph: nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph: The input networkx graph
 
         :return: If a Graph or Digraph is given:
                     return Tuple[adjacency: ndarray,
@@ -105,23 +106,21 @@ class GraphIO:
                                 edge_attributes: DataFrame]
 
                  If a MultiGraph or MultiDiGraph is given:
-                    return Tuple[List[adjacency: ndarray, ...],
-                                List[node_attributes: DataFrame, ...],
-                                List[edge_attributes: DataFrame, ...]]
-
-                node labels are added to the node_attribute DataFrame with attribute name `original_node_label`
+                    return Dict[Hashable: Tuple[adjacency: ndarray,
+                                          node_attributes: DataFrame,
+                                          edge_attributes: DataFrame]
+                                ]
+                    where the keys of the dictionary are the edge keys from the multigraph.
         """
-        adj_out = []
-        node_out = []
-        edge_out = []
+        out = {}
         if type(graph) in [nx.MultiGraph, nx.MultiDiGraph]:
             graph = cls.multigraph_to_graphs(graph)
         else:
-            graph = [graph]
+            graph = {0: graph}
 
-        for g in graph:
+        for key in graph.keys():
+            g = graph[key]
             np_adj = nx.to_numpy_matrix(g, weight='weight')
-            adj_out.append(np_adj)
             ids = g.nodes()
             g = nx.convert_node_labels_to_integers(g)
             edge_data = g.edges(data=True)
@@ -130,13 +129,12 @@ class GraphIO:
             node_data = {n[0]: n[1] for n in node_data}
             for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
-            node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
-            edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
+            out[key] = (np_adj, pd.DataFrame.from_dict(node_data, orient='index'), pd.DataFrame.from_dict(edge_data, orient='index'))
 
-        if len(adj_out) == 1:
-            return adj_out[0], node_out[0], edge_out[0]
+        if len(out) == 1:
+            return out[0]
         else:
-            return adj_out, node_out, edge_out
+            return out
 
     @classmethod
     def dump(cls,
