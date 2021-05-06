@@ -1,0 +1,12 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+- file: landing
+
+# - part: Preliminaries
+#   chapters:
+#   - file: outline
+#   - file: introduction
+
+- part: Plotting
+  chapters: 
+  - file: plotting_3d
