@@ -129,7 +129,9 @@ class GraphIO:
             node_data = {n[0]: n[1] for n in node_data}
             for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
-            out[key] = (np_adj, pd.DataFrame.from_dict(node_data, orient='index'), pd.DataFrame.from_dict(edge_data, orient='index'))
+            out[key] = (np_adj,
+                        pd.DataFrame.from_dict(node_data, orient='index'),
+                        pd.DataFrame.from_dict(edge_data, orient='index'))
 
         if len(out) == 1:
             return out[0]
