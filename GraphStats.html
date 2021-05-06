@@ -1,0 +1,866 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graph Statistics &#8212; Connectocross</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Plotting in 3D" href="plotting_3d.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/nd_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Connectocross</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="landing.html">
+   Welcome
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Plotting
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="plotting_3d.html">
+   Plotting in 3D
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Summary Statistics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Graph Statistics
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/GraphStats.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/neurodata/connectocross"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/neurodata/connectocross/issues/new?title=Issue%20on%20page%20%2FGraphStats.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/neurodata/connectocross/main?urlpath=tree/connectocross/GraphStats.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Graph Statistics
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-graphs">
+     Load the Graphs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later">
+   Assign Sex and Synapse Type to ciona, fafb, and neuPrint (to be removed later)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#obtain-graph-statistics-and-metadata">
+     Obtain Graph Statistics and Metadata
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize">
+     Visualize
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize-degree-distributions">
+     Visualize Degree Distributions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#witvliet-specific-graphs">
+   Witvliet-specific graphs
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#degree-distributions">
+     Degree Distributions
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="graph-statistics">
+<h1>Graph Statistics<a class="headerlink" href="#graph-statistics" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">graph</span> <span class="kn">import</span> <span class="n">GraphIO</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">networkx.algorithms.components</span> <span class="kn">import</span> <span class="n">number_strongly_connected_components</span> <span class="k">as</span> <span class="n">ncc_strong</span>
+<span class="kn">from</span> <span class="nn">networkx.algorithms.components</span> <span class="kn">import</span> <span class="n">number_weakly_connected_components</span> <span class="k">as</span> <span class="n">ncc_weak</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">ptch</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this notebook, I will show how to obtain basic graph statistics (number of nodes, density, etc.) from the graphs stored in our filespec.</p>
+<div class="section" id="load-the-graphs">
+<h2>Load the Graphs<a class="headerlink" href="#load-the-graphs" title="Permalink to this headline">¶</a></h2>
+<p>In this study, we extracted data from five different connectome datasets. The first, identified as “worm wiring” or “worm” consists of both a hermaphroditic and male c. elegans connectome (<span id="id1">[<a class="reference internal" href="#id16"><span>CJB+19</span></a>]</span>, <a class="reference external" href="https://wormwiring.org/">https://wormwiring.org/</a>).  The second, identified as “witvliet” or “wit” consists of 8 different hermaphrodite c. elegans connectomes at different developmental ages (<span id="id2">[<a class="reference internal" href="#id14"><span>WMM+20</span></a>]</span>, <a class="reference external" href="https://nemanode.org/">https://nemanode.org/</a>).  The third, identified as “ciona” consists of a single connectome of a ciona intestinalis larva (<span id="id3">[<a class="reference internal" href="#id12"><span>RLM16</span></a>]</span>).  The fourth, identified as “fafb” consists of a single connectome of a female adult fly brain (<span id="id4">[<a class="reference internal" href="#id13"><span>ZLP+18</span></a>]</span>, <a class="reference external" href="https://temca2data.org/">https://temca2data.org/</a>).  The fifth and final dataset consists of a portion of an adult female fly brain (<span id="id5">[<a class="reference internal" href="#id15"><span>XJL+20</span></a>]</span>, <a class="reference external" href="https://www.janelia.org/project-team/flyem/hemibrain">https://www.janelia.org/project-team/flyem/hemibrain</a>).  For more thorough analysis, graphs are subdivided into chemical and electrical synapses.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;docs&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="s2">&quot;json_connectomes&quot;</span><span class="p">)</span>
+
+<span class="n">worm_graphs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">worm_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;worm_wiring/connectome&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">graph_folder</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">worm_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">graph_folder</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="n">graph_folder_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">worm_path</span><span class="p">,</span> <span class="n">graph_folder</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">graph_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">graph_folder_path</span><span class="p">):</span>
+        <span class="n">graph_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">graph_folder_path</span><span class="p">,</span> <span class="n">graph_file</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">graph_file_path</span><span class="p">)</span>
+        <span class="n">worm_graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+<span class="n">wit_graphs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">wit_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;witvilet&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">graph_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">wit_path</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wit_path</span><span class="p">,</span> <span class="n">graph_file</span><span class="p">)</span>
+    <span class="n">graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">wit_graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    
+<span class="n">wit_subgraphs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">wit_graphs</span><span class="p">:</span>
+    <span class="n">chemical_edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">electrical_edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;synapse_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;chemical&quot;</span><span class="p">:</span>
+            <span class="n">chemical_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">*</span><span class="n">edge</span><span class="p">,))</span>
+        <span class="k">elif</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;synapse_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;electrical&quot;</span><span class="p">:</span>
+            <span class="n">electrical_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">*</span><span class="n">edge</span><span class="p">,))</span>
+    <span class="n">g_chemical</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">chemical_edges</span><span class="p">))</span>
+    <span class="n">g_chemical</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
+    <span class="n">g_electrical</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">electrical_edges</span><span class="p">))</span>
+    <span class="n">g_electrical</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Total Gap Junction&quot;</span>
+    <span class="n">wit_subgraphs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">g_chemical</span><span class="p">,</span> <span class="n">g_electrical</span><span class="p">])</span>
+
+<span class="n">ciona_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;ciona.json&quot;</span><span class="p">)</span>
+<span class="n">fafb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;fafb.json&quot;</span><span class="p">)</span>
+<span class="n">neuPrint_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;neuPrint_graphs.json&quot;</span><span class="p">)</span>
+<span class="n">ciona_graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ciona_path</span><span class="p">)</span>
+<span class="n">fafb_graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fafb_path</span><span class="p">)</span>
+<span class="n">neuPrint_graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">neuPrint_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later">
+<h1>Assign Sex and Synapse Type to ciona, fafb, and neuPrint (to be removed later)<a class="headerlink" href="#assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Hermaphrodite&quot;</span>
+<span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Mixed&quot;</span>
+<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
+<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
+<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
+<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="obtain-graph-statistics-and-metadata">
+<h2>Obtain Graph Statistics and Metadata<a class="headerlink" href="#obtain-graph-statistics-and-metadata" title="Permalink to this headline">¶</a></h2>
+<p>Basic graph statistics such as density and graph size are useful measures to obtain an intuitive sense of the relevant qualities of each connectome, although they are not useful for statistically rigorous comparison due to the correlation of many statistics with each other.  The degree distributions are also useful exploratory metrics to see how the neurons are connected to each other within each connectome.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">statnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lcc_size&quot;</span><span class="p">,</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="s2">&quot;num_strong&quot;</span><span class="p">,</span> <span class="s2">&quot;num_weak&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;in_degree&quot;</span><span class="p">,</span> <span class="s2">&quot;out_degree&quot;</span><span class="p">,</span> <span class="s2">&quot;synapse_type&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="s2">&quot;graph_origin&quot;</span><span class="p">]</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="p">{</span><span class="n">statname</span><span class="p">:[]</span> <span class="k">for</span> <span class="n">statname</span> <span class="ow">in</span> <span class="n">statnames</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">append_stats</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">stats</span><span class="p">):</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;lcc_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">weakly_connected_components</span><span class="p">(</span><span class="n">g</span><span class="p">))))</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">density</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;num_strong&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ncc_strong</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;num_weak&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ncc_weak</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">in_degree</span><span class="p">()])</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">out_degree</span><span class="p">()])</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;Synapse Type&#39;</span><span class="p">])</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
+    
+<span class="n">digraphs</span> <span class="o">=</span> <span class="p">[</span><span class="n">worm_graphs</span><span class="p">,</span> <span class="n">wit_subgraphs</span><span class="p">,</span> <span class="p">[</span><span class="n">fafb_graph</span><span class="p">],</span> <span class="p">[</span><span class="n">neuPrint_graph</span><span class="p">]]</span>
+<span class="n">digraph_origins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;worm&quot;</span><span class="p">,</span> <span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="s2">&quot;fafb&quot;</span><span class="p">,</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">graphs</span><span class="p">,</span> <span class="n">origin</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">digraphs</span><span class="p">,</span> <span class="n">digraph_origins</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">:</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;graph_origin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+        <span class="n">append_stats</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+    
+<span class="c1">#ciona uses slightly different functions since it is undirected</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;graph_origin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ciona&quot;</span><span class="p">)</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;lcc_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">ciona_graph</span><span class="p">))))</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">density</span><span class="p">(</span><span class="n">ciona_graph</span><span class="p">))</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;num_strong&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">number_connected_components</span><span class="p">(</span><span class="n">ciona_graph</span><span class="p">))</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;num_weak&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">number_connected_components</span><span class="p">(</span><span class="n">ciona_graph</span><span class="p">))</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ciona_graph</span><span class="o">.</span><span class="n">degree</span><span class="p">()])</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ciona_graph</span><span class="o">.</span><span class="n">degree</span><span class="p">()])</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">])</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">])</span>
+
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;max_in_degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">])]</span>
+<span class="n">stats</span><span class="p">[</span><span class="s2">&quot;max_out_degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">])]</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    lcc_size   density  num_strong  num_weak  \
+0        446  0.023723         163         9   
+1        460  0.006606         469         9   
+2        460  0.013135           9         9   
+3        559  0.016076         220        17   
+4         57  0.005128         586        46   
+5         57  0.010157          46        46   
+6        221  0.045290          63         1   
+7        163  0.008834         182        10   
+8        219  0.045788          61         1   
+9        154  0.012186         160         5   
+10       187  0.022282          85         1   
+11         6  0.009701          93        18   
+12       193  0.026608          72         1   
+13        86  0.009295         116        14   
+14       198  0.025945          75         1   
+15         2  0.010307          96        14   
+16       203  0.027703          76         1   
+17       111  0.011383         136        11   
+18       210  0.034518          60         1   
+19       151  0.012233         155         3   
+20       216  0.032838          72         1   
+21       139  0.010392         144         3   
+22       143  0.039799          11         3   
+23    179788  0.000205       62957      6200   
+24       222  0.093311           1         1   
+
+                                            in_degree  \
+0   [4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...   
+1   [0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...   
+2   [6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
+3   [4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...   
+4   [0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...   
+5   [5, 6, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
+6   [19, 18, 30, 33, 26, 40, 38, 17, 19, 35, 13, 1...   
+7   [0, 0, 0, 0, 0, 0, 1, 2, 4, 1, 0, 1, 1, 4, 6, ...   
+8   [14, 11, 8, 35, 32, 29, 28, 16, 18, 17, 15, 11...   
+9   [0, 1, 3, 0, 1, 0, 1, 2, 4, 0, 1, 4, 3, 1, 6, ...   
+10  [5, 4, 13, 1, 3, 12, 10, 9, 6, 2, 11, 9, 14, 2...   
+11  [1, 4, 0, 0, 0, 3, 1, 0, 1, 2, 1, 2, 0, 0, 0, ...   
+12  [4, 6, 17, 3, 14, 15, 10, 9, 5, 7, 3, 11, 4, 1...   
+13  [0, 1, 0, 1, 1, 1, 0, 2, 2, 0, 1, 2, 1, 2, 2, ...   
+14  [9, 8, 5, 4, 5, 16, 16, 16, 15, 6, 5, 7, 8, 10...   
+15  [0, 1, 2, 1, 1, 1, 2, 1, 2, 0, 1, 2, 0, 0, 0, ...   
+16  [7, 7, 18, 10, 7, 7, 18, 15, 16, 9, 11, 5, 12,...   
+17  [0, 1, 0, 2, 2, 2, 0, 0, 0, 3, 4, 1, 4, 1, 1, ...   
+18  [13, 5, 8, 8, 21, 22, 22, 11, 10, 24, 8, 2, 7,...   
+19  [0, 1, 2, 1, 0, 0, 1, 2, 5, 0, 3, 2, 0, 7, 4, ...   
+20  [9, 13, 20, 7, 26, 29, 25, 25, 5, 10, 5, 13, 1...   
+21  [0, 1, 0, 4, 0, 1, 0, 1, 0, 2, 3, 5, 2, 0, 2, ...   
+22  [11, 5, 9, 7, 8, 7, 5, 9, 6, 2, 6, 4, 1, 3, 3,...   
+23  [5, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...   
+24  [17, 52, 13, 42, 51, 32, 8, 31, 5, 50, 4, 5, 4...   
+
+                                           out_degree  \
+0   [15, 20, 16, 19, 15, 11, 19, 11, 19, 10, 9, 5,...   
+1   [6, 7, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...   
+2   [6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
+3   [15, 20, 16, 19, 15, 11, 19, 11, 18, 10, 9, 5,...   
+4   [5, 6, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...   
+5   [5, 6, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
+6   [13, 10, 15, 21, 0, 0, 0, 0, 0, 0, 7, 28, 7, 1...   
+7   [3, 7, 1, 5, 6, 4, 5, 2, 1, 7, 1, 0, 0, 0, 3, ...   
+8   [14, 11, 23, 0, 0, 0, 0, 0, 0, 7, 10, 11, 8, 7...   
+9   [7, 5, 2, 5, 4, 4, 3, 0, 1, 3, 1, 2, 4, 0, 0, ...   
+10  [8, 7, 9, 7, 1, 0, 0, 0, 0, 2, 8, 13, 7, 5, 0,...   
+11  [1, 3, 1, 3, 1, 1, 0, 1, 1, 1, 0, 0, 2, 1, 1, ...   
+12  [11, 9, 8, 10, 0, 0, 0, 0, 0, 2, 9, 9, 0, 20, ...   
+13  [4, 6, 1, 2, 0, 1, 1, 1, 0, 1, 0, 0, 2, 2, 1, ...   
+14  [8, 8, 10, 13, 2, 0, 0, 0, 0, 0, 0, 6, 4, 7, 1...   
+15  [1, 0, 3, 0, 3, 0, 1, 0, 0, 1, 0, 0, 1, 2, 1, ...   
+16  [10, 11, 9, 15, 14, 2, 0, 0, 0, 0, 0, 4, 20, 0...   
+17  [5, 6, 1, 4, 4, 2, 6, 2, 3, 0, 0, 1, 0, 1, 2, ...   
+18  [12, 12, 18, 4, 0, 0, 0, 0, 0, 0, 6, 8, 4, 6, ...   
+19  [6, 3, 4, 2, 5, 5, 7, 3, 1, 14, 3, 0, 2, 0, 0,...   
+20  [13, 10, 8, 12, 0, 0, 0, 0, 12, 7, 9, 15, 29, ...   
+21  [1, 4, 4, 1, 4, 2, 2, 1, 2, 0, 0, 0, 0, 5, 3, ...   
+22  [5, 7, 2, 4, 5, 2, 2, 8, 1, 7, 9, 4, 3, 5, 2, ...   
+23  [6, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...   
+24  [17, 52, 13, 42, 51, 32, 8, 31, 5, 50, 4, 5, 4...   
+
+               synapse_type            sex graph_origin  max_in_degree  \
+0                  Chemical  Hermaphrodite         worm             65   
+1   Asymmetric Gap Junction  Hermaphrodite         worm             56   
+2    Symmetric Gap Junction  Hermaphrodite         worm             59   
+3                  Chemical           Male         worm             49   
+4   Asymmetric Gap Junction           Male         worm             37   
+5    Symmetric Gap Junction           Male         worm             51   
+6                  Chemical  Hermaphrodite          wit             40   
+7        Total Gap Junction  Hermaphrodite          wit              8   
+8                  Chemical  Hermaphrodite          wit             39   
+9        Total Gap Junction  Hermaphrodite          wit             11   
+10                 Chemical  Hermaphrodite          wit             19   
+11       Total Gap Junction  Hermaphrodite          wit              4   
+12                 Chemical  Hermaphrodite          wit             20   
+13       Total Gap Junction  Hermaphrodite          wit              6   
+14                 Chemical  Hermaphrodite          wit             23   
+15       Total Gap Junction  Hermaphrodite          wit              4   
+16                 Chemical  Hermaphrodite          wit             26   
+17       Total Gap Junction  Hermaphrodite          wit              9   
+18                 Chemical  Hermaphrodite          wit             27   
+19       Total Gap Junction  Hermaphrodite          wit             11   
+20                 Chemical  Hermaphrodite          wit             29   
+21       Total Gap Junction  Hermaphrodite          wit              7   
+22                 Chemical         Female         fafb            101   
+23                 Chemical         Female     neuPrint           4388   
+24                    Mixed  Hermaphrodite        ciona             78   
+
+    max_out_degree  
+0               49  
+1               31  
+2               59  
+3               50  
+4               40  
+5               51  
+6               36  
+7               10  
+8               32  
+9               14  
+10              16  
+11               5  
+12              25  
+13               6  
+14              23  
+15               6  
+16              20  
+17              12  
+18              28  
+19              14  
+20              33  
+21               8  
+22             106  
+23            6070  
+24              78  
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="visualize">
+<h2>Visualize<a class="headerlink" href="#visualize" title="Permalink to this headline">¶</a></h2>
+<p>We visualize each graph statistic for all the extracted graphs, making note of relevant properties such as synapse type and sex.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;deep&quot;</span><span class="p">)</span>
+<span class="n">dark_palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;dark&quot;</span><span class="p">)</span>
+<span class="n">bright_palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;bright&quot;</span><span class="p">)</span>
+
+<span class="n">syntypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="s2">&quot;Symmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Asymmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Mixed&quot;</span><span class="p">]</span>
+<span class="n">graph_origins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;worm&quot;</span><span class="p">,</span> <span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="s2">&quot;ciona&quot;</span><span class="p">,</span> <span class="s2">&quot;fafb&quot;</span><span class="p">,</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">]</span>
+<span class="n">syntype_pos</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">syntypes</span><span class="p">)]</span>
+<span class="n">syntype2pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">syntype</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">syntype</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">,</span> <span class="n">syntypes</span><span class="p">)}</span>
+<span class="n">syn_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">syntype2pos</span><span class="p">[</span><span class="n">syntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">syntype</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="p">])</span>
+<span class="n">syn_pos</span> <span class="o">+=</span> <span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">syn_pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="c1">#adding jitter</span>
+<span class="n">sexes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;Hermaphrodite&quot;</span><span class="p">]</span>
+<span class="n">sex2shape</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Male&quot;</span><span class="p">:</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;Hermaphrodite&quot;</span><span class="p">:</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;Female&quot;</span><span class="p">:</span><span class="s2">&quot;p&quot;</span><span class="p">}</span>
+<span class="n">graph2color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ciona&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;fafb&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;worm&quot;</span><span class="p">:</span><span class="n">dark_palette</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;wit&quot;</span><span class="p">:</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
+<span class="n">graph2patch</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">:</span>
+    <span class="n">graph2patch</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptch</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">graph2color</span><span class="p">[</span><span class="n">g_origin</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">g_origin</span><span class="p">)</span>
+<span class="n">sex2patch</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">:</span>
+    <span class="n">sex2patch</span><span class="p">[</span><span class="n">isex</span><span class="p">]</span> <span class="o">=</span> <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="n">sex2shape</span><span class="p">[</span><span class="n">isex</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">isex</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">vis_stat</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">stat_name</span><span class="p">,</span> <span class="n">use_log</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">fig_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;talk&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">True</span>
+    <span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">sex</span><span class="o">==</span><span class="n">isex</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="n">g_origin</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">syn_pos</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                        <span class="n">stat</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                        <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">graph2color</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]]),</span>
+                        <span class="n">label</span><span class="o">=</span><span class="n">g_origin</span><span class="p">,</span>
+                        <span class="n">marker</span><span class="o">=</span><span class="n">sex2shape</span><span class="p">[</span><span class="n">isex</span><span class="p">])</span>
+    <span class="n">grace_factor</span> <span class="o">=</span> <span class="mf">1.1</span>
+    <span class="k">if</span> <span class="n">use_log</span><span class="p">:</span>
+        <span class="n">grace_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">grace_factor</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">grace_factor</span><span class="o">*</span><span class="n">fig_max</span><span class="p">,</span> <span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">grace_factor</span><span class="o">*</span><span class="n">fig_max</span><span class="p">,</span> <span class="s2">&quot;Electrical&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">stat_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">(</span><span class="n">syntypes</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">fill_width</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">syntype_pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_log</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph2patch</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]</span> <span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="n">sex2patch</span><span class="p">[</span><span class="n">isex</span><span class="p">]</span> <span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">fig</span>
+    
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">lcc_size</span><span class="p">,</span> <span class="s2">&quot;size of largest WCC&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">density</span><span class="p">,</span> <span class="s2">&quot;Density&quot;</span><span class="p">,</span> <span class="n">use_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">num_strong</span><span class="p">,</span> <span class="s2">&quot;# of SCCs&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">num_weak</span><span class="p">,</span> <span class="s2">&quot;# of WCCs&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">max_in_degree</span><span class="p">,</span> <span class="s2">&quot;max in-degree&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">max_out_degree</span><span class="p">,</span> <span class="s2">&quot;max out-degree&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GraphStats_13_0.png" src="_images/GraphStats_13_0.png" />
+<img alt="_images/GraphStats_13_1.png" src="_images/GraphStats_13_1.png" />
+<img alt="_images/GraphStats_13_2.png" src="_images/GraphStats_13_2.png" />
+<img alt="_images/GraphStats_13_3.png" src="_images/GraphStats_13_3.png" />
+<img alt="_images/GraphStats_13_4.png" src="_images/GraphStats_13_4.png" />
+<img alt="_images/GraphStats_13_5.png" src="_images/GraphStats_13_5.png" />
+</div>
+</div>
+<p>Notice how the neuPrint graph is much bigger than the others, and so generally diverges on a variety of metrics.</p>
+</div>
+<div class="section" id="visualize-degree-distributions">
+<h2>Visualize Degree Distributions<a class="headerlink" href="#visualize-degree-distributions" title="Permalink to this headline">¶</a></h2>
+<p>We also visualize degree distributions in the same way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vis_degree_dist</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">graph_origin</span><span class="p">,</span> <span class="n">sex</span><span class="p">,</span> <span class="n">dd_name</span><span class="p">):</span>
+    <span class="n">dd_plot</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dd_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1">#Aggregating worm_wiring and witvilet graphs</span>
+    <span class="n">worm</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dd</span><span class="p">[</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;worm&quot;</span><span class="p">],</span> <span class="p">[])</span>
+    <span class="n">worm_dd</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">worm</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">worm</span><span class="p">))</span>
+    <span class="n">worm_dd</span> <span class="o">=</span> <span class="n">worm_dd</span><span class="o">/</span><span class="mi">2</span> <span class="c1">#average over sex</span>
+    <span class="n">dd_plot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">worm_dd</span><span class="p">)</span>
+    <span class="n">dd_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;worm&quot;</span><span class="p">)</span>
+    <span class="n">wit</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dd</span><span class="p">[</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">],</span> <span class="p">[])</span>
+    <span class="n">wit_dd</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">wit</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">wit</span><span class="p">))</span>
+    <span class="n">wit_dd</span> <span class="o">=</span> <span class="n">wit_dd</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">wit_graphs</span><span class="p">)</span> <span class="c1">#average over age</span>
+    <span class="n">dd_plot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wit_dd</span><span class="p">)</span>
+    <span class="n">dd_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;wit&quot;</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ddi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dd</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">graph_origin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;wit&quot;</span> <span class="ow">and</span> <span class="n">graph_origin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="s2">&quot;worm&quot;</span><span class="p">:</span>
+            <span class="n">hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ddi</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">ddi</span><span class="p">)))</span>
+            <span class="n">dd_plot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+            <span class="n">dd_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graph_origin</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#plot</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">ddi</span><span class="p">,</span> <span class="n">dd_label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dd_plot</span><span class="p">,</span> <span class="n">dd_labels</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ddi</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">graph2color</span><span class="p">[</span><span class="n">dd_label</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">dd_label</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">dd_name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">in_degree</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">sex</span><span class="p">,</span> <span class="s2">&quot;In Degree&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">out_degree</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">sex</span><span class="p">,</span> <span class="s2">&quot;Out Degree&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GraphStats_17_0.png" src="_images/GraphStats_17_0.png" />
+<img alt="_images/GraphStats_17_1.png" src="_images/GraphStats_17_1.png" />
+</div>
+</div>
+<p>Now, it is clear that the ciona counts remain relatively uniform as degree increases, but all the other graphs decline sharply as degree increases.</p>
+</div>
+</div>
+<div class="section" id="witvliet-specific-graphs">
+<h1>Witvliet-specific graphs<a class="headerlink" href="#witvliet-specific-graphs" title="Permalink to this headline">¶</a></h1>
+<p>Since the witvliet dataset has 8 c. elegans connectomes, each with a different age, we can visualize how the connectomes change with age.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ages</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">wit_graphs</span><span class="p">:</span>
+    <span class="n">ages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">syntypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="s2">&quot;Symmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Asymmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">]</span>
+<span class="n">syntype2color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Chemical&quot;</span><span class="p">:</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">:</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">8</span><span class="p">]}</span>
+<span class="k">def</span> <span class="nf">vis_stat</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">stat_name</span><span class="p">):</span>
+    <span class="n">fig_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">True</span>
+    <span class="k">for</span> <span class="n">syntype</span><span class="p">,</span> <span class="n">synlabel</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="s2">&quot;Electrical&quot;</span><span class="p">]):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span>
+                    <span class="n">stat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="n">syntype</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">)],</span>
+                    <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">syntype2color</span><span class="p">[</span><span class="n">syntype</span><span class="p">]]),</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="n">sex2shape</span><span class="p">[</span><span class="n">wit_graphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]],</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">synlabel</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Age (hours)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">stat_name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">fig</span>
+    
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">lcc_size</span><span class="p">,</span>  <span class="s2">&quot;size of largest WCC&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">density</span><span class="p">,</span> <span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">num_strong</span><span class="p">,</span> <span class="s2">&quot;# of SCCs&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">num_weak</span><span class="p">,</span> <span class="s2">&quot;# of WCCs&quot;</span><span class="p">)</span>
+<span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">max_in_degree</span><span class="p">,</span> <span class="s2">&quot;max in-degree&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">vis_stat</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">max_out_degree</span><span class="p">,</span> <span class="s2">&quot;max out-degree&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GraphStats_22_0.png" src="_images/GraphStats_22_0.png" />
+<img alt="_images/GraphStats_22_1.png" src="_images/GraphStats_22_1.png" />
+<img alt="_images/GraphStats_22_2.png" src="_images/GraphStats_22_2.png" />
+<img alt="_images/GraphStats_22_3.png" src="_images/GraphStats_22_3.png" />
+<img alt="_images/GraphStats_22_4.png" src="_images/GraphStats_22_4.png" />
+<img alt="_images/GraphStats_22_5.png" src="_images/GraphStats_22_5.png" />
+</div>
+</div>
+<p>We can see that the graphs generally get bigger over time, and the chemical synapses grow more dense, while the density of the electrical synapses remains relatively constant.</p>
+<div class="section" id="degree-distributions">
+<h2>Degree Distributions<a class="headerlink" href="#degree-distributions" title="Permalink to this headline">¶</a></h2>
+<p>We also visualize the degree distributions the same way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vis_degree_dist</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">max_degree</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">dd_name</span><span class="p">):</span>
+    <span class="n">max_max_degree</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_degree</span><span class="p">)</span>
+    <span class="n">dd_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">max_max_degree</span><span class="p">))</span>
+    <span class="n">dd_z</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ddi</span> <span class="ow">in</span> <span class="n">dd</span><span class="p">:</span>
+        <span class="n">hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ddi</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ddi</span><span class="p">))</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_max_degree</span><span class="o">-</span><span class="nb">max</span><span class="p">(</span><span class="n">ddi</span><span class="p">)))</span>
+        <span class="n">dd_z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+    <span class="n">dd_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dd_z</span><span class="p">))</span>
+    
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="p">(</span><span class="n">ages</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">ages</span><span class="p">))</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ages</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dd_x</span><span class="p">,</span> <span class="n">dd_z</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">ages</span><span class="p">),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ages</span><span class="p">)))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Age (hours)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">dd_name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">chem_ins</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">in_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Chemical&quot;</span><span class="p">)]</span>
+<span class="n">chem_in_maxes</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">max_in_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Chemical&quot;</span><span class="p">)]</span>
+<span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">chem_ins</span><span class="p">,</span> <span class="n">chem_in_maxes</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="s2">&quot;chemical in-degree&quot;</span><span class="p">)</span>
+
+<span class="n">elec_ins</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">in_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">)]</span>
+<span class="n">elec_in_maxes</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">max_in_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">)]</span>
+<span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">elec_ins</span><span class="p">,</span> <span class="n">elec_in_maxes</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="s2">&quot;electrical in-degree&quot;</span><span class="p">)</span>
+
+<span class="n">chem_outs</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Chemical&quot;</span><span class="p">)]</span>
+<span class="n">chem_out_maxes</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">max_out_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Chemical&quot;</span><span class="p">)]</span>
+<span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">chem_outs</span><span class="p">,</span> <span class="n">chem_out_maxes</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="s2">&quot;chemical out-degree&quot;</span><span class="p">)</span>
+
+<span class="n">elec_outs</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">)]</span>
+<span class="n">elec_out_maxes</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">max_out_degree</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">graph_origin</span><span class="o">==</span><span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">synapse_type</span><span class="o">==</span><span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">)]</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">vis_degree_dist</span><span class="p">(</span><span class="n">elec_outs</span><span class="p">,</span> <span class="n">elec_out_maxes</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="s2">&quot;electrical out-degree&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GraphStats_26_0.png" src="_images/GraphStats_26_0.png" />
+<img alt="_images/GraphStats_26_1.png" src="_images/GraphStats_26_1.png" />
+<img alt="_images/GraphStats_26_2.png" src="_images/GraphStats_26_2.png" />
+<img alt="_images/GraphStats_26_3.png" src="_images/GraphStats_26_3.png" />
+</div>
+</div>
+<p>From these plots, we can tell that the degree distribution remains relatively static across age.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id6"><dl class="citation">
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id1">CJB+19</a></span></dt>
+<dd><p>Steven J. Cook, Travis A. Jarrell, Christopher A. Brittin, Yi Wang, Adam E. Bloniarz, Maksim A. Yakovlev, Ken C. Q. Nguyen, Leo T.-H. Tang, Emily A. Bayer, Janet S. Duerr, Hannes E. Bülow, Oliver Hobert, David H. Hall, and Scott W. Emmons. Whole-animal connectomes of both Caenorhabditis elegans sexes. <em>Nature</em>, 571(7763):63–71, July 2019. Number: 7763 Publisher: Nature Publishing Group. URL: <a class="reference external" href="https://www.nature.com/articles/s41586-019-1352-7">https://www.nature.com/articles/s41586-019-1352-7</a> (visited on 2021-05-06), <a class="reference external" href="https://doi.org/10.1038/s41586-019-1352-7">doi:10.1038/s41586-019-1352-7</a>.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">RLM16</a></span></dt>
+<dd><p>Kerrianne Ryan, Zhiyuan Lu, and Ian A Meinertzhagen. The CNS connectome of a tadpole larva of Ciona intestinalis (L.) highlights sidedness in the brain of a chordate sibling. <em>eLife</em>, 5:e16962, December 2016. Publisher: eLife Sciences Publications, Ltd. URL: <a class="reference external" href="https://doi.org/10.7554/eLife.16962">https://doi.org/10.7554/eLife.16962</a> (visited on 2021-05-06), <a class="reference external" href="https://doi.org/10.7554/eLife.16962">doi:10.7554/eLife.16962</a>.</p>
+</dd>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id2">WMM+20</a></span></dt>
+<dd><p>Daniel Witvliet, Ben Mulcahy, James K. Mitchell, Yaron Meirovitch, Daniel R. Berger, Yuelong Wu, Yufang Liu, Wan Xian Koh, Rajeev Parvathala, Douglas Holmyard, Richard L. Schalek, Nir Shavit, Andrew D. Chisholm, Jeff W. Lichtman, Aravinthan D. T. Samuel, and Mei Zhen. Connectomes across development reveal principles of brain maturation in C. elegans. <em>bioRxiv</em>, pages 2020.04.30.066209, April 2020. Publisher: Cold Spring Harbor Laboratory Section: New Results. URL: <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2020.04.30.066209v1">https://www.biorxiv.org/content/10.1101/2020.04.30.066209v1</a> (visited on 2021-05-06), <a class="reference external" href="https://doi.org/10.1101/2020.04.30.066209">doi:10.1101/2020.04.30.066209</a>.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id5">XJL+20</a></span></dt>
+<dd><p>C. Shan Xu, Michal Januszewski, Zhiyuan Lu, Shin-ya Takemura, Kenneth J. Hayworth, Gary Huang, Kazunori Shinomiya, Jeremy Maitin-Shepard, David Ackerman, Stuart Berg, Tim Blakely, John Bogovic, Jody Clements, Tom Dolafi, Philip Hubbard, Dagmar Kainmueller, William Katz, Takashi Kawase, Khaled A. Khairy, Laramie Leavitt, Peter H. Li, Larry Lindsey, Nicole Neubarth, Donald J. Olbris, Hideo Otsuna, Eric T. Troutman, Lowell Umayam, Ting Zhao, Masayoshi Ito, Jens Goldammer, Tanya Wolff, Robert Svirskas, Philipp Schlegel, Erika R. Neace, Christopher J. Knecht, Chelsea X. Alvarado, Dennis A. Bailey, Samantha Ballinger, Jolanta A. Borycz, Brandon S. Canino, Natasha Cheatham, Michael Cook, Marisa Dreher, Octave Duclos, Bryon Eubanks, Kelli Fairbanks, Samantha Finley, Nora Forknall, Audrey Francis, Gary Patrick Hopkins, Emily M. Joyce, SungJin Kim, Nicole A. Kirk, Julie Kovalyak, Shirley A. Lauchie, Alanna Lohff, Charli Maldonado, Emily A. Manley, Sari McLin, Caroline Mooney, Miatta Ndama, Omotara Ogundeyi, Nneoma Okeoma, Christopher Ordish, Nicholas Padilla, Christopher Patrick, Tyler Paterson, Elliott E. Phillips, Emily M. Phillips, Neha Rampally, Caitlin Ribeiro, Madelaine K. Robertson, Jon Thomson Rymer, Sean M. Ryan, Megan Sammons, Anne K. Scott, Ashley L. Scott, Aya Shinomiya, Claire Smith, Kelsey Smith, Natalie L. Smith, Margaret A. Sobeski, Alia Suleiman, Jackie Swift, Satoko Takemura, Iris Talebi, Dorota Tarnogorska, Emily Tenshaw, Temour Tokhi, John J. Walsh, Tansy Yang, Jane Anne Horne, Feng Li, Ruchi Parekh, Patricia K. Rivlin, Vivek Jayaraman, Kei Ito, Stephan Saalfeld, Reed George, Ian Meinertzhagen, Gerald M. Rubin, Harald F. Hess, Louis K. Scheffer, Viren Jain, and Stephen M. Plaza. A Connectome of the Adult Drosophila Central Brain. <em>bioRxiv</em>, pages 2020.01.21.911859, January 2020. Publisher: Cold Spring Harbor Laboratory Section: New Results. URL: <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2020.01.21.911859v1">https://www.biorxiv.org/content/10.1101/2020.01.21.911859v1</a> (visited on 2021-05-06), <a class="reference external" href="https://doi.org/10.1101/2020.01.21.911859">doi:10.1101/2020.01.21.911859</a>.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">ZLP+18</a></span></dt>
+<dd><p>Zhihao Zheng, J. Scott Lauritzen, Eric Perlman, Camenzind G. Robinson, Matthew Nichols, Daniel Milkie, Omar Torrens, John Price, Corey B. Fisher, Nadiya Sharifi, Steven A. Calle-Schuler, Lucia Kmecova, Iqbal J. Ali, Bill Karsh, Eric T. Trautman, John A. Bogovic, Philipp Hanslovsky, Gregory S. X. E. Jefferis, Michael Kazhdan, Khaled Khairy, Stephan Saalfeld, Richard D. Fetter, and Davi D. Bock. A Complete Electron Microscopy Volume of the Brain of Adult Drosophila melanogaster. <em>Cell</em>, 174(3):730–743.e22, July 2018. Publisher: Elsevier. URL: <a class="reference external" href="https://www.cell.com/cell/abstract/S0092-8674(18)30787-6">https://www.cell.com/cell/abstract/S0092-8674(18)30787-6</a> (visited on 2021-05-06), <a class="reference external" href="https://doi.org/10.1016/j.cell.2018.06.019">doi:10.1016/j.cell.2018.06.019</a>.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="plotting_3d.html" title="previous page">Plotting in 3D</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By NeuroData<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
