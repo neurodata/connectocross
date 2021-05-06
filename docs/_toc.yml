@@ -10,3 +10,8 @@
 - part: Plotting
   chapters: 
   - file: plotting_3d
+  - file: plotting_Adj
+
+- part: Affinity Testing
+  chapters:
+  - file: Affinity_Testing
