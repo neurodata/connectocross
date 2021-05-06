@@ -1,25 +1,21 @@
 import itertools
 import json
-import os
 import sys
-import re
-import shutil
 from typing import List, Tuple, Union, Dict, Hashable
 
 import networkx as nx
-import numpy as np
 import pandas as pd
 
 
 class GraphIO:
     """
     Class for IO with networkx `Graph`,  `DiGraph`, `MultiGraph`, or `MultiDiGraph` objects. Provides functions for
-    writing to / loading from JSON file, as well as for converting to other graph representations.
+    writing to / loading from JSON file, as well as for converting to other graph representations. The JSON file format
+    used by this Module is compliant with the node-link json format, and is described in the `file_spec.pdf` file.
     """
 
     @staticmethod
     def infer_edge_attributes(graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph]):
-        # find edge attributes names if not provided.
         if type(graph) in [nx.MultiDiGraph, nx.MultiGraph]:
             edge_att_names = set(itertools.chain(*[list(graph.edges[n].keys()) for n in graph.edges(keys=True)]))
         else:
@@ -40,7 +36,9 @@ class GraphIO:
     @staticmethod
     def multigraph_to_graphs(mg: Union[nx.MultiDiGraph, nx.MultiGraph]) -> Dict[Hashable, Union[nx.Graph, nx.DiGraph]]:
         """
-        Get a Dictionary of graphs specified by this multigraph, indexed by the unique edge keys.
+        Convert a networkx multigraph to a dictionary of graphs.
+        :param mg: The input MultiGraph or MultiDiGraph to convert,
+        :return: A dictionary keyed on the MultiGraphs edges keys, with DiGraph or Graph values
         """
         if type(mg) is nx.MultiGraph:
             g_class = nx.Graph
@@ -101,6 +99,9 @@ class GraphIO:
                              ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
         Get a nx MultiGraph or MultiDiGraph from list of nx Graphs or DiGraphs.
+        :param graphs: The list or dictionary of input graphs to convert. If list, indexes are used as edge keys. If
+                       Dictionary, keys are used as edge keys.
+        :return: The networkx MultiGraph or MultiDiGraph Representation of the data
         """
         if type(graphs) is list or type(graphs) is tuple:
             itr = list(enumerate(graphs))
@@ -126,11 +127,12 @@ class GraphIO:
     def get_adjacency_representation(cls, graph: Union[nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph]):
         """
         Get the graph as an adjacency matrix, a list of node attribute DataFrames, and a list of edge attribute
-        DataFrames. If a multigraph is passed, it will be converted to a list of graphs, and a list of each of those
-        will be returned. Node labels are added to the node attribute DataFrame with attribute name
-        `original_node_label`
+        DataFrames. If a multigraph is passed, it will be converted to a dictionary of graphs keyed on edges keys via
+        `GraphIO.multigraph_to_graphs'.
 
-        :param graph: nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph
+        Node labels are added to the node attribute DataFrame with attribute name `original_node_label`
+
+        :param graph: nx.Graph, nx.DiGraph, nx.MultiDiGraph, nx.MultiGraph: The input networkx graph
 
         :return: If a Graph or Digraph is given:
                     return Tuple[adjacency: ndarray,
@@ -138,23 +140,21 @@ class GraphIO:
                                 edge_attributes: DataFrame]
 
                  If a MultiGraph or MultiDiGraph is given:
-                    return Tuple[List[adjacency: ndarray, ...],
-                                List[node_attributes: DataFrame, ...],
-                                List[edge_attributes: DataFrame, ...]]
-
-                node labels are added to the node_attribute DataFrame with attribute name `original_node_label`
+                    return Dict[Hashable: Tuple[adjacency: ndarray,
+                                          node_attributes: DataFrame,
+                                          edge_attributes: DataFrame]
+                                ]
+                    where the keys of the dictionary are the edge keys from the multigraph.
         """
-        adj_out = []
-        node_out = []
-        edge_out = []
+        out = {}
         if type(graph) in [nx.MultiGraph, nx.MultiDiGraph]:
             graph = cls.multigraph_to_graphs(graph)
         else:
-            graph = [graph]
+            graph = {0: graph}
 
-        for g in graph:
+        for key in graph.keys():
+            g = graph[key]
             np_adj = nx.to_numpy_matrix(g, weight='weight')
-            adj_out.append(np_adj)
             ids = g.nodes()
             g = nx.convert_node_labels_to_integers(g)
             edge_data = g.edges(data=True)
@@ -163,20 +163,21 @@ class GraphIO:
             node_data = {n[0]: n[1] for n in node_data}
             for i, n in enumerate(ids):
                 node_data[i]['original_node_label'] = n
-            node_out.append(pd.DataFrame.from_dict(node_data, orient='index'))
-            edge_out.append(pd.DataFrame.from_dict(edge_data, orient='index'))
+            out[key] = (np_adj,
+                        pd.DataFrame.from_dict(node_data, orient='index'),
+                        pd.DataFrame.from_dict(edge_data, orient='index'))
 
-        if len(adj_out) == 1:
-            return adj_out[0], node_out[0], edge_out[0]
+        if len(out) == 1:
+            return out[0]
         else:
-            return adj_out, node_out, edge_out
+            return out
 
     @classmethod
     def dump(cls,
              graph: Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph],
              path: str):
         """
-        Write graph to disk at specified path.
+        Write graph to disk at specified path, using the json file spec.
         :param graph: the graph or list of graphs to dump
         :param path: path to write to, without extension
         :return: None
@@ -206,9 +207,8 @@ class GraphIO:
     @classmethod
     def load(cls, path: str) -> Tuple[Union[nx.Graph, nx.DiGraph, nx.MultiGraph, nx.MultiDiGraph], set, set, set]:
         """
-        load metagraph from disk.
+        load a json graph from disk.
         :param path: location of graph file.
-
         :return (graph object, edge attributes, node attributes, graph attributes)
         """
         with open(path, 'r') as f:
@@ -225,15 +225,3 @@ class GraphIO:
         g_att_names = cls.infer_graph_attributes(graph)
 
         return graph, e_att_names, n_att_names, g_att_names
-
-
-if __name__ == '__main__':
-    g = nx.generators.star_graph(10)
-    bb = nx.betweenness_centrality(g)
-    nx.set_node_attributes(g, bb, "betweenness")
-    att = {(0, 1): "red",
-           (0, 2): "blue",
-           (0, 5): "red",
-           (0, 8): "blue"}
-    nx.set_edge_attributes(g, att, "color")
-    adj, node, edge = GraphIO.get_adjacency_representation(g)
