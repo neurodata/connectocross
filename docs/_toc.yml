@@ -10,3 +10,8 @@
 - part: Plotting
   chapters: 
   - file: plotting_3d
+
+- part: Analysis
+  chapters:
+  - file: connectome_overview
+  - file: apriori_sbms
