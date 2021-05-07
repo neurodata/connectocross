@@ -10,9 +10,13 @@
 - part: Plotting
   chapters:
   - file: plotting_3d
-- part : Summary Statistics
-  chapters: 
-  - file: GraphStats
-- part: Analyzing
+  - file: plotting_Adj
+- part : Analysis
   chapters:
+  - file: connectome_overview
+  - file: apriori_sbms
+  - file: GraphStats 
   - file: Modularity
+- part: Affinity Testing
+  chapters:
+  - file: Affinity_Testing
