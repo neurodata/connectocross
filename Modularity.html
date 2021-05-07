@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modularity &#8212; Connectocross</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Graph Statistics" href="GraphStats.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/nd_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Connectocross</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="landing.html">
+   Welcome
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Plotting
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="plotting_3d.html">
+   Plotting in 3D
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Analysis
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="GraphStats.html">
+   Graph Statistics
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Modularity
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/Modularity.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/neurodata/connectocross"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/neurodata/connectocross/issues/new?title=Issue%20on%20page%20%2FModularity.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/neurodata/connectocross/main?urlpath=tree/connectocross/Modularity.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="modularity">
+<h1>Modularity<a class="headerlink" href="#modularity" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we will calculate the modularity of each graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">ptch</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+
+<span class="kn">from</span> <span class="nn">graph</span> <span class="kn">import</span> <span class="n">GraphIO</span>
+<span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">symmetrize</span><span class="p">,</span> <span class="n">to_weighted_edge_list</span>
+<span class="kn">from</span> <span class="nn">graspologic.partition</span> <span class="kn">import</span> <span class="n">leiden</span><span class="p">,</span> <span class="n">modularity</span>
+
+<span class="kn">from</span> <span class="nn">c_elegans.witvilet2020.load_wit</span> <span class="kn">import</span> <span class="n">load_wit</span>
+<span class="kn">from</span> <span class="nn">c_elegans.worm_wiring.load_worm</span> <span class="kn">import</span> <span class="n">load_worm</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<p>Load graphs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">worm_graphs</span> <span class="o">=</span> <span class="n">load_worm</span><span class="p">()</span>
+<span class="n">wit_graphs</span> <span class="o">=</span> <span class="n">load_wit</span><span class="p">()</span>
+<span class="n">worm_connectomes</span> <span class="o">=</span> <span class="n">worm_graphs</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neuPrint</span> <span class="o">=</span> <span class="s1">&#39;./json_connectomes/neuPrint_graphs.json&#39;</span>
+<span class="n">fafb</span> <span class="o">=</span> <span class="s1">&#39;./json_connectomes/fafb.json&#39;</span>
+<span class="n">ciona</span> <span class="o">=</span> <span class="s1">&#39;./json_connectomes/ciona.json&#39;</span>
+<span class="n">G_neuP</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">neuPrint</span><span class="p">)</span>
+<span class="n">G_fafb</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fafb</span><span class="p">)</span>
+<span class="n">G_ciona</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ciona</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Change the graph nodes which are type int to type str.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nodes_to_string</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given a networkx graph, convert the nodes into type str.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">str_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">new_node</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">str_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">str_nodes</span><span class="p">))</span>
+    <span class="n">graph_str</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">relabel_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph_str</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G_neuP_str</span> <span class="o">=</span> <span class="n">nodes_to_string</span><span class="p">(</span><span class="n">G_neuP</span><span class="p">)</span>
+<span class="n">G_fafb_str</span> <span class="o">=</span> <span class="n">nodes_to_string</span><span class="p">(</span><span class="n">G_fafb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Change the directed graphs into undirected by recreating the graph with newly weighted edges. The new weight is defined as the average weight between two nodes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">average_undirect</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="n">G_undirect</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">G_un</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">nodes_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">wt</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">wti</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">vi</span> <span class="o">==</span> <span class="n">u</span> <span class="ow">and</span> <span class="n">ui</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">n_a</span> <span class="o">=</span> <span class="n">u</span>
+                <span class="n">n_b</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="n">new_wt</span> <span class="o">=</span> <span class="p">(</span><span class="n">wt</span><span class="o">+</span><span class="n">wti</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">n_a</span><span class="p">,</span> <span class="n">n_b</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_list</span><span class="p">:</span>
+                    <span class="n">nodes_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_a</span><span class="p">,</span> <span class="n">n_b</span><span class="p">))</span>
+                    <span class="n">G_un</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_a</span><span class="p">,</span> <span class="n">n_b</span><span class="p">,</span> <span class="n">new_wt</span><span class="p">))</span>
+    <span class="n">G_undirect</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="n">G_un</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G_undirect</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modulate_graphs</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given the networkx graph, returns the modularity of each graph.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="ow">is</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">:</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">GraphIO</span><span class="o">.</span><span class="n">multigraph_to_graphs</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">leids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+            <span class="n">leiden_g</span> <span class="o">=</span> <span class="n">leiden</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+            <span class="n">leids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">leiden_g</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">modularity</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">leiden_g</span><span class="p">)</span>
+            <span class="n">ms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ms</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="ow">is</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
+        <span class="n">leiden_g</span> <span class="o">=</span> <span class="n">leiden</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">modularity</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">leiden_g</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">leiden_g</span> <span class="o">=</span> <span class="n">leiden</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">modularity</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">leiden_g</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the same method in Graph Stats.ipynb developed by Paul to visualize the result.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fafb_graph</span> <span class="o">=</span> <span class="n">G_fafb_str</span>
+<span class="n">neuPrint_graph</span> <span class="o">=</span> <span class="n">G_neuP_str</span>
+<span class="n">ciona_graph</span> <span class="o">=</span> <span class="n">G_ciona</span>
+<span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Hermaphrodite&quot;</span>
+<span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Mixed&quot;</span>
+<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
+<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
+<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
+<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">graph_origin</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">synapse_type</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">graph_origin</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">worm_connectomes</span><span class="p">:</span>
+    <span class="n">graph_origin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;worm&quot;</span><span class="p">)</span>
+    <span class="n">synapse_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;Synapse Type&#39;</span><span class="p">])</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
+    <span class="n">g_u</span> <span class="o">=</span> <span class="n">average_undirect</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">mod</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modulate_graphs</span><span class="p">(</span><span class="n">g_u</span><span class="p">))</span>
+    
+<span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">wit_graphs</span><span class="p">:</span>
+    <span class="n">chemical_edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">electrical_edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;synapse_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;chemical&quot;</span><span class="p">:</span>
+            <span class="n">chemical_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">*</span><span class="n">edge</span><span class="p">,))</span>
+        <span class="k">elif</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;synapse_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;electrical&quot;</span><span class="p">:</span>
+            <span class="n">electrical_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">*</span><span class="n">edge</span><span class="p">,))</span>
+    <span class="n">g_chemical</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">chemical_edges</span><span class="p">)</span>
+    <span class="n">g_electrical</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">electrical_edges</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">syn_type</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">g_chemical</span><span class="p">,</span> <span class="s2">&quot;Chemical&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">g_electrical</span><span class="p">,</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">)]:</span>
+        <span class="n">graph_origin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;wit&quot;</span><span class="p">)</span>
+        <span class="n">g_u</span> <span class="o">=</span> <span class="n">average_undirect</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="n">mod</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modulate_graphs</span><span class="p">(</span><span class="n">g_u</span><span class="p">))</span>
+        <span class="n">synapse_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">syn_type</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Hermaphrodite&#39;</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">origin</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">fafb_graph</span><span class="p">,</span> <span class="n">neuPrint_graph</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;fafb&quot;</span><span class="p">,</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">]):</span>
+    <span class="n">graph_origin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+    <span class="n">mod</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modulate_graphs</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
+    <span class="n">synapse_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">])</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">])</span>
+
+<span class="n">graph_origin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ciona&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">modulate_graphs</span><span class="p">(</span><span class="n">ciona_graph</span><span class="p">))</span>
+<span class="n">mod</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">synapse_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;synapse_type&quot;</span><span class="p">])</span>
+<span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">])</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+<span class="n">graph_origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">graph_origin</span><span class="p">)</span>
+<span class="n">synapse_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">synapse_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nan
+</pre></div>
+</div>
+</div>
+</div>
+<p>Above here, we plot out the true value of the modularity of ciona. For the code I have now, it returns the value as nan. For the consistance of plotting, I set the value of modularity in ciona as 0 for now.</p>
+<p>Below are the modularity values for each graph:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.67587643, 0.42530557, 0.66619527, 0.70228917, 0.44383798,
+       0.75648366, 0.82148604, 0.        , 0.82405983, 0.        ,
+       0.79678834, 0.        , 0.79124719, 0.16666667, 0.77743768,
+       0.33333333, 0.74976119, 0.        , 0.72257865, 0.33333333,
+       0.70013869, 0.36419753, 0.47409648, 0.70747848, 0.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;deep&quot;</span><span class="p">)</span>
+<span class="n">dark_palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;dark&quot;</span><span class="p">)</span>
+<span class="n">bright_palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;bright&quot;</span><span class="p">)</span>
+<span class="n">syntypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="s2">&quot;Symmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Asymmetric Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Total Gap Junction&quot;</span><span class="p">,</span> <span class="s2">&quot;Mixed&quot;</span><span class="p">]</span>
+<span class="n">graph_origins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;worm&quot;</span><span class="p">,</span> <span class="s2">&quot;wit&quot;</span><span class="p">,</span> <span class="s2">&quot;ciona&quot;</span><span class="p">,</span> <span class="s2">&quot;fafb&quot;</span><span class="p">,</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">]</span>
+<span class="n">syntype_pos</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">syntypes</span><span class="p">)]</span>
+<span class="n">syntype2pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">syntype</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">syntype</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">,</span> <span class="n">syntypes</span><span class="p">)}</span>
+<span class="n">syn_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">syntype2pos</span><span class="p">[</span><span class="n">syntype</span><span class="p">]</span> <span class="k">for</span> <span class="n">syntype</span> <span class="ow">in</span> <span class="n">synapse_type</span><span class="p">])</span>
+<span class="n">syn_pos</span> <span class="o">+=</span> <span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">syn_pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="c1">#adding jitter</span>
+<span class="n">sexes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;Hermaphrodite&quot;</span><span class="p">]</span>
+<span class="n">sex2shape</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Male&quot;</span><span class="p">:</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;Hermaphrodite&quot;</span><span class="p">:</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;Female&quot;</span><span class="p">:</span><span class="s2">&quot;o&quot;</span><span class="p">}</span>
+<span class="n">graph2color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ciona&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;fafb&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;worm&quot;</span><span class="p">:</span><span class="n">dark_palette</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;wit&quot;</span><span class="p">:</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;neuPrint&quot;</span><span class="p">:</span><span class="n">palette</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
+<span class="n">graph2patch</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">:</span>
+    <span class="n">graph2patch</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptch</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">graph2color</span><span class="p">[</span><span class="n">g_origin</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">g_origin</span><span class="p">)</span>
+<span class="n">sex2patch</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">:</span>
+    <span class="n">sex2patch</span><span class="p">[</span><span class="n">isex</span><span class="p">]</span> <span class="o">=</span> <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="n">sex2shape</span><span class="p">[</span><span class="n">isex</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">isex</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">vis_stat</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">stat_name</span><span class="p">,</span> <span class="n">use_log</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">fig_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s1">&#39;talk&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">True</span>
+    <span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="n">isex</span><span class="p">,</span> <span class="n">graph_origin</span><span class="o">==</span><span class="n">g_origin</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">syn_pos</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                        <span class="n">stat</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                        <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">graph2color</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]]),</span>
+                        <span class="n">label</span><span class="o">=</span><span class="n">g_origin</span><span class="p">,</span>
+                        <span class="n">marker</span><span class="o">=</span><span class="n">sex2shape</span><span class="p">[</span><span class="n">isex</span><span class="p">])</span>
+    <span class="n">grace_factor</span> <span class="o">=</span> <span class="mf">1.1</span>
+    <span class="k">if</span> <span class="n">use_log</span><span class="p">:</span>
+        <span class="n">grace_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">grace_factor</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">grace_factor</span><span class="o">*</span><span class="n">fig_max</span><span class="p">,</span> <span class="s2">&quot;Chemical&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">grace_factor</span><span class="o">*</span><span class="n">fig_max</span><span class="p">,</span> <span class="s2">&quot;Electrical&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">stat_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">(</span><span class="n">syntypes</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">fill_width</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">syntype_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">syntype_pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="n">fill_width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bright_palette</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_log</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph2patch</span><span class="p">[</span><span class="n">g_origin</span><span class="p">]</span> <span class="k">for</span> <span class="n">g_origin</span> <span class="ow">in</span> <span class="n">graph_origins</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="n">sex2patch</span><span class="p">[</span><span class="n">isex</span><span class="p">]</span> <span class="k">for</span> <span class="n">isex</span> <span class="ow">in</span> <span class="n">sexes</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># return fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vis_stat</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;Modularity&quot;</span><span class="p">,</span> <span class="n">use_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/Modularity_19_0.png" src="_images/Modularity_19_0.png" />
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="GraphStats.html" title="previous page">Graph Statistics</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By NeuroData<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
