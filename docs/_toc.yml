@@ -10,7 +10,9 @@
 - part: Plotting
   chapters:
   - file: plotting_3d
-
+- part : Summary Statistics
+  chapters: 
+  - file: GraphStats
 - part: Analyzing
   chapters:
   - file: Modularity

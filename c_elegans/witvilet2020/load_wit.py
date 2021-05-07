@@ -14,7 +14,8 @@ from graph import GraphIO
 def load_wit():
     wit_graphs = []
     script_dir = os.path.dirname(__file__)
-    base_path = os.path.join(script_dir, "graphs")
+    base_path = script_dir.split("connectocross")[0]
+    base_path = os.path.join(base_path, "connectocross/json_connectomes/witvilet")
     for graph_file in os.listdir(base_path):
         path = os.path.join(base_path, graph_file)
         graph, _, _, _ = GraphIO.load(path)
