@@ -8,10 +8,13 @@
 #   - file: introduction
 
 - part: Plotting
-  chapters: 
+  chapters:
   - file: plotting_3d
   - file: plotting_Adj
-
-- part: Affinity Testing
+- part : Analysis
   chapters:
+  - file: connectome_overview
+  - file: apriori_sbms
+  - file: GraphStats
+  - file: Modularity
   - file: Affinity_Testing

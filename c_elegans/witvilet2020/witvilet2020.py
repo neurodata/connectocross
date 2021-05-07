@@ -55,9 +55,10 @@ def load_witvilet_2020(datasets, base_url):
     ages = [0, 5, 8, 16, 23, 27, 45, 45]
     dev_stages = ["L1", "L1", "L1", "L1", "L2", "L3", "YA", "YA"]
     for i, g in enumerate(graphs):
-        g.graph["micrcopy_method"] = microscopies[i]
+        g.graph["microscopy_method"] = microscopies[i]
         g.graph["age"] = ages[i]
         g.graph["developmental_stage"] = dev_stages[i]
+        g.graph["Sex"] = "Hermaphrodite"
     return graphs
 
 def witvilet2020():
