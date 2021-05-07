@@ -6,4 +6,5 @@
 - Instruction for neuPrint
 
 - Metadata from neuPrint is under the folder _json_connections_. 
+- For more information about the graph attributes, see [here](https://neuprint.janelia.org/public/neuprintuserguide.pdf).
 
