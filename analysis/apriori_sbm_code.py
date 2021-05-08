@@ -11,7 +11,7 @@ from itertools import chain, combinations
 
 def fit_apriori_sbm(connectome: nx.DiGraph, group: List[str], plot_sbms=True):
     """
-    Finds BIC, liklihhods for sbm fit to different attr groups.
+    Finds BIC, likelihhods for sbm fit to different attr groups.
     :param connectome:
     :param single_keys:
     :param plot_sbms:
@@ -58,11 +58,11 @@ def fit_apriori_sbm(connectome: nx.DiGraph, group: List[str], plot_sbms=True):
 
     estimator.n_verts = len(adj)
     bic = estimator.bic(adj)
-    liklihood = estimator.score(adj)
+    likelihood = estimator.score(adj)
     n_params = estimator._n_parameters()
     row = {
         "bic": -bic,
-        "liklihood": liklihood,
+        "likelihood": likelihood,
         "n_params": n_params,
         "estimator": estimator
     }
