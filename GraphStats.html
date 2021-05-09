@@ -233,13 +233,6 @@
      Load the Graphs
     </a>
    </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later">
-   Assign Sex and Synapse Type to ciona, fafb, and neuPrint (to be removed later)
-  </a>
-  <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#obtain-graph-statistics-and-metadata">
      Obtain Graph Statistics and Metadata
@@ -359,21 +352,6 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later">
-<h1>Assign Sex and Synapse Type to ciona, fafb, and neuPrint (to be removed later)<a class="headerlink" href="#assign-sex-and-synapse-type-to-ciona-fafb-and-neuprint-to-be-removed-later" title="Permalink to this headline">¶</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Hermaphrodite&quot;</span>
-<span class="n">ciona_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Mixed&quot;</span>
-<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
-<span class="n">fafb_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
-<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span>
-<span class="n">neuPrint_graph</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;Synapse Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Chemical&quot;</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="section" id="obtain-graph-statistics-and-metadata">
 <h2>Obtain Graph Statistics and Metadata<a class="headerlink" href="#obtain-graph-statistics-and-metadata" title="Permalink to this headline">¶</a></h2>
 <p>Basic graph statistics such as density and graph size are useful measures to obtain an intuitive sense of the relevant qualities of each connectome, although they are not useful for statistically rigorous comparison due to the correlation of many statistics with each other.  The degree distributions are also useful exploratory metrics to see how the neurons are connected to each other within each connectome.</p>
@@ -414,148 +392,116 @@
 <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;max_in_degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;in_degree&quot;</span><span class="p">])]</span>
 <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;max_out_degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;out_degree&quot;</span><span class="p">])]</span>
 <span class="n">stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    lcc_size   density  num_strong  num_weak  \
-0        446  0.023723         163         9   
-1        460  0.006606         469         9   
-2        460  0.013135           9         9   
-3        559  0.016076         220        17   
-4         57  0.005128         586        46   
-5         57  0.010157          46        46   
-6        221  0.045290          63         1   
-7        163  0.008834         182        10   
-8        219  0.045788          61         1   
-9        154  0.012186         160         5   
-10       187  0.022282          85         1   
-11         6  0.009701          93        18   
-12       193  0.026608          72         1   
-13        86  0.009295         116        14   
-14       198  0.025945          75         1   
-15         2  0.010307          96        14   
-16       203  0.027703          76         1   
-17       111  0.011383         136        11   
-18       210  0.034518          60         1   
-19       151  0.012233         155         3   
-20       216  0.032838          72         1   
-21       139  0.010392         144         3   
-22       143  0.039799          11         3   
-23    179788  0.000205       62957      6200   
-24       222  0.093311           1         1   
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-                                            in_degree  \
-0   [4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...   
-1   [0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...   
-2   [6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
-3   [4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...   
-4   [0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...   
-5   [5, 6, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
-6   [19, 18, 30, 33, 26, 40, 38, 17, 19, 35, 13, 1...   
-7   [0, 0, 0, 0, 0, 0, 1, 2, 4, 1, 0, 1, 1, 4, 6, ...   
-8   [14, 11, 8, 35, 32, 29, 28, 16, 18, 17, 15, 11...   
-9   [0, 1, 3, 0, 1, 0, 1, 2, 4, 0, 1, 4, 3, 1, 6, ...   
-10  [5, 4, 13, 1, 3, 12, 10, 9, 6, 2, 11, 9, 14, 2...   
-11  [1, 4, 0, 0, 0, 3, 1, 0, 1, 2, 1, 2, 0, 0, 0, ...   
-12  [4, 6, 17, 3, 14, 15, 10, 9, 5, 7, 3, 11, 4, 1...   
-13  [0, 1, 0, 1, 1, 1, 0, 2, 2, 0, 1, 2, 1, 2, 2, ...   
-14  [9, 8, 5, 4, 5, 16, 16, 16, 15, 6, 5, 7, 8, 10...   
-15  [0, 1, 2, 1, 1, 1, 2, 1, 2, 0, 1, 2, 0, 0, 0, ...   
-16  [7, 7, 18, 10, 7, 7, 18, 15, 16, 9, 11, 5, 12,...   
-17  [0, 1, 0, 2, 2, 2, 0, 0, 0, 3, 4, 1, 4, 1, 1, ...   
-18  [13, 5, 8, 8, 21, 22, 22, 11, 10, 24, 8, 2, 7,...   
-19  [0, 1, 2, 1, 0, 0, 1, 2, 5, 0, 3, 2, 0, 7, 4, ...   
-20  [9, 13, 20, 7, 26, 29, 25, 25, 5, 10, 5, 13, 1...   
-21  [0, 1, 0, 4, 0, 1, 0, 1, 0, 2, 3, 5, 2, 0, 2, ...   
-22  [11, 5, 9, 7, 8, 7, 5, 9, 6, 2, 6, 4, 1, 3, 3,...   
-23  [5, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...   
-24  [17, 52, 13, 42, 51, 32, 8, 31, 5, 50, 4, 5, 4...   
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-                                           out_degree  \
-0   [15, 20, 16, 19, 15, 11, 19, 11, 19, 10, 9, 5,...   
-1   [6, 7, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...   
-2   [6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
-3   [15, 20, 16, 19, 15, 11, 19, 11, 18, 10, 9, 5,...   
-4   [5, 6, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...   
-5   [5, 6, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...   
-6   [13, 10, 15, 21, 0, 0, 0, 0, 0, 0, 7, 28, 7, 1...   
-7   [3, 7, 1, 5, 6, 4, 5, 2, 1, 7, 1, 0, 0, 0, 3, ...   
-8   [14, 11, 23, 0, 0, 0, 0, 0, 0, 7, 10, 11, 8, 7...   
-9   [7, 5, 2, 5, 4, 4, 3, 0, 1, 3, 1, 2, 4, 0, 0, ...   
-10  [8, 7, 9, 7, 1, 0, 0, 0, 0, 2, 8, 13, 7, 5, 0,...   
-11  [1, 3, 1, 3, 1, 1, 0, 1, 1, 1, 0, 0, 2, 1, 1, ...   
-12  [11, 9, 8, 10, 0, 0, 0, 0, 0, 2, 9, 9, 0, 20, ...   
-13  [4, 6, 1, 2, 0, 1, 1, 1, 0, 1, 0, 0, 2, 2, 1, ...   
-14  [8, 8, 10, 13, 2, 0, 0, 0, 0, 0, 0, 6, 4, 7, 1...   
-15  [1, 0, 3, 0, 3, 0, 1, 0, 0, 1, 0, 0, 1, 2, 1, ...   
-16  [10, 11, 9, 15, 14, 2, 0, 0, 0, 0, 0, 4, 20, 0...   
-17  [5, 6, 1, 4, 4, 2, 6, 2, 3, 0, 0, 1, 0, 1, 2, ...   
-18  [12, 12, 18, 4, 0, 0, 0, 0, 0, 0, 6, 8, 4, 6, ...   
-19  [6, 3, 4, 2, 5, 5, 7, 3, 1, 14, 3, 0, 2, 0, 0,...   
-20  [13, 10, 8, 12, 0, 0, 0, 0, 12, 7, 9, 15, 29, ...   
-21  [1, 4, 4, 1, 4, 2, 2, 1, 2, 0, 0, 0, 0, 5, 3, ...   
-22  [5, 7, 2, 4, 5, 2, 2, 8, 1, 7, 9, 4, 3, 5, 2, ...   
-23  [6, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...   
-24  [17, 52, 13, 42, 51, 32, 8, 31, 5, 50, 4, 5, 4...   
-
-               synapse_type            sex graph_origin  max_in_degree  \
-0                  Chemical  Hermaphrodite         worm             65   
-1   Asymmetric Gap Junction  Hermaphrodite         worm             56   
-2    Symmetric Gap Junction  Hermaphrodite         worm             59   
-3                  Chemical           Male         worm             49   
-4   Asymmetric Gap Junction           Male         worm             37   
-5    Symmetric Gap Junction           Male         worm             51   
-6                  Chemical  Hermaphrodite          wit             40   
-7        Total Gap Junction  Hermaphrodite          wit              8   
-8                  Chemical  Hermaphrodite          wit             39   
-9        Total Gap Junction  Hermaphrodite          wit             11   
-10                 Chemical  Hermaphrodite          wit             19   
-11       Total Gap Junction  Hermaphrodite          wit              4   
-12                 Chemical  Hermaphrodite          wit             20   
-13       Total Gap Junction  Hermaphrodite          wit              6   
-14                 Chemical  Hermaphrodite          wit             23   
-15       Total Gap Junction  Hermaphrodite          wit              4   
-16                 Chemical  Hermaphrodite          wit             26   
-17       Total Gap Junction  Hermaphrodite          wit              9   
-18                 Chemical  Hermaphrodite          wit             27   
-19       Total Gap Junction  Hermaphrodite          wit             11   
-20                 Chemical  Hermaphrodite          wit             29   
-21       Total Gap Junction  Hermaphrodite          wit              7   
-22                 Chemical         Female         fafb            101   
-23                 Chemical         Female     neuPrint           4388   
-24                    Mixed  Hermaphrodite        ciona             78   
-
-    max_out_degree  
-0               49  
-1               31  
-2               59  
-3               50  
-4               40  
-5               51  
-6               36  
-7               10  
-8               32  
-9               14  
-10              16  
-11               5  
-12              25  
-13               6  
-14              23  
-15               6  
-16              20  
-17              12  
-18              28  
-19              14  
-20              33  
-21               8  
-22             106  
-23            6070  
-24              78  
-</pre></div>
-</div>
-</div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lcc_size</th>
+      <th>density</th>
+      <th>num_strong</th>
+      <th>num_weak</th>
+      <th>in_degree</th>
+      <th>out_degree</th>
+      <th>synapse_type</th>
+      <th>sex</th>
+      <th>graph_origin</th>
+      <th>max_in_degree</th>
+      <th>max_out_degree</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>446</td>
+      <td>0.023723</td>
+      <td>163</td>
+      <td>9</td>
+      <td>[4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...</td>
+      <td>[15, 20, 16, 19, 15, 11, 19, 11, 19, 10, 9, 5,...</td>
+      <td>Chemical</td>
+      <td>Hermaphrodite</td>
+      <td>worm</td>
+      <td>65</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>460</td>
+      <td>0.006606</td>
+      <td>469</td>
+      <td>9</td>
+      <td>[0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...</td>
+      <td>[6, 7, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...</td>
+      <td>Asymmetric Gap Junction</td>
+      <td>Hermaphrodite</td>
+      <td>worm</td>
+      <td>56</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>460</td>
+      <td>0.013135</td>
+      <td>9</td>
+      <td>9</td>
+      <td>[6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...</td>
+      <td>[6, 7, 4, 6, 6, 4, 5, 1, 3, 7, 9, 6, 6, 10, 6,...</td>
+      <td>Symmetric Gap Junction</td>
+      <td>Hermaphrodite</td>
+      <td>worm</td>
+      <td>59</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>559</td>
+      <td>0.016076</td>
+      <td>220</td>
+      <td>17</td>
+      <td>[4, 4, 6, 7, 7, 10, 11, 6, 7, 7, 3, 11, 12, 9,...</td>
+      <td>[15, 20, 16, 19, 15, 11, 19, 11, 18, 10, 9, 5,...</td>
+      <td>Chemical</td>
+      <td>Male</td>
+      <td>worm</td>
+      <td>49</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>0.005128</td>
+      <td>586</td>
+      <td>46</td>
+      <td>[0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 4, 1, 1, 4, 3, ...</td>
+      <td>[5, 6, 3, 5, 5, 3, 5, 1, 1, 5, 5, 5, 5, 7, 4, ...</td>
+      <td>Asymmetric Gap Junction</td>
+      <td>Male</td>
+      <td>worm</td>
+      <td>37</td>
+      <td>40</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </div>
 <div class="section" id="visualize">
@@ -604,6 +550,8 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">grace_factor</span><span class="o">*</span><span class="n">fig_max</span><span class="p">,</span> <span class="s2">&quot;Electrical&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">stat_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">stat_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;degree&quot;</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">syntype_pos</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">(</span><span class="n">syntypes</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
     <span class="n">fill_width</span> <span class="o">=</span> <span class="mi">1</span>
@@ -625,12 +573,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GraphStats_13_0.png" src="_images/GraphStats_13_0.png" />
-<img alt="_images/GraphStats_13_1.png" src="_images/GraphStats_13_1.png" />
-<img alt="_images/GraphStats_13_2.png" src="_images/GraphStats_13_2.png" />
-<img alt="_images/GraphStats_13_3.png" src="_images/GraphStats_13_3.png" />
-<img alt="_images/GraphStats_13_4.png" src="_images/GraphStats_13_4.png" />
-<img alt="_images/GraphStats_13_5.png" src="_images/GraphStats_13_5.png" />
+<img alt="_images/GraphStats_11_0.png" src="_images/GraphStats_11_0.png" />
+<img alt="_images/GraphStats_11_1.png" src="_images/GraphStats_11_1.png" />
+<img alt="_images/GraphStats_11_2.png" src="_images/GraphStats_11_2.png" />
+<img alt="_images/GraphStats_11_3.png" src="_images/GraphStats_11_3.png" />
+<img alt="_images/GraphStats_11_4.png" src="_images/GraphStats_11_4.png" />
+<img alt="_images/GraphStats_11_5.png" src="_images/GraphStats_11_5.png" />
 </div>
 </div>
 <p>Notice how the neuPrint graph is much bigger than the others, and so generally diverges on a variety of metrics.</p>
@@ -680,8 +628,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GraphStats_17_0.png" src="_images/GraphStats_17_0.png" />
-<img alt="_images/GraphStats_17_1.png" src="_images/GraphStats_17_1.png" />
+<img alt="_images/GraphStats_15_0.png" src="_images/GraphStats_15_0.png" />
+<img alt="_images/GraphStats_15_1.png" src="_images/GraphStats_15_1.png" />
 </div>
 </div>
 <p>Now, it is clear that the ciona counts remain relatively uniform as degree increases, but all the other graphs decline sharply as degree increases.</p>
@@ -731,12 +679,12 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GraphStats_22_0.png" src="_images/GraphStats_22_0.png" />
-<img alt="_images/GraphStats_22_1.png" src="_images/GraphStats_22_1.png" />
-<img alt="_images/GraphStats_22_2.png" src="_images/GraphStats_22_2.png" />
-<img alt="_images/GraphStats_22_3.png" src="_images/GraphStats_22_3.png" />
-<img alt="_images/GraphStats_22_4.png" src="_images/GraphStats_22_4.png" />
-<img alt="_images/GraphStats_22_5.png" src="_images/GraphStats_22_5.png" />
+<img alt="_images/GraphStats_20_0.png" src="_images/GraphStats_20_0.png" />
+<img alt="_images/GraphStats_20_1.png" src="_images/GraphStats_20_1.png" />
+<img alt="_images/GraphStats_20_2.png" src="_images/GraphStats_20_2.png" />
+<img alt="_images/GraphStats_20_3.png" src="_images/GraphStats_20_3.png" />
+<img alt="_images/GraphStats_20_4.png" src="_images/GraphStats_20_4.png" />
+<img alt="_images/GraphStats_20_5.png" src="_images/GraphStats_20_5.png" />
 </div>
 </div>
 <p>We can see that the graphs generally get bigger over time, and the chemical synapses grow more dense, while the density of the electrical synapses remains relatively constant.</p>
@@ -787,10 +735,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GraphStats_26_0.png" src="_images/GraphStats_26_0.png" />
-<img alt="_images/GraphStats_26_1.png" src="_images/GraphStats_26_1.png" />
-<img alt="_images/GraphStats_26_2.png" src="_images/GraphStats_26_2.png" />
-<img alt="_images/GraphStats_26_3.png" src="_images/GraphStats_26_3.png" />
+<img alt="_images/GraphStats_24_0.png" src="_images/GraphStats_24_0.png" />
+<img alt="_images/GraphStats_24_1.png" src="_images/GraphStats_24_1.png" />
+<img alt="_images/GraphStats_24_2.png" src="_images/GraphStats_24_2.png" />
+<img alt="_images/GraphStats_24_3.png" src="_images/GraphStats_24_3.png" />
 </div>
 </div>
 <p>From these plots, we can tell that the degree distribution remains relatively static across age.</p>
