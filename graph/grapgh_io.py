@@ -84,6 +84,8 @@ class GraphIO:
                 for att_key in data:
                     if 'weight' not in att_key:
                         G[u][v][att_key] = data[att_key]
+            for key in mg.graph.keys():
+                G.graph[key] = mg.graph[key]
         else:
             if type(mg) is nx.MultiGraph:
                 G = nx.Graph(mg)
