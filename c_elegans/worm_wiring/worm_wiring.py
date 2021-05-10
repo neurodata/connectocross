@@ -370,7 +370,7 @@ def extract_filedata(dfs, df_type):
                 elif df_type in {'connectome', 'cellclass_connectome'}:
                     if i == 1 or i == 4:
                         g.graph['Synapse Type'] = "Asymmetric Gap Junction"
-                    else:
+                    elif i == 2 or i == 5:
                         g.graph['Synapse Type'] = "Symmetric Gap Junction"
                 else:
                     g.graph['Synapse Type'] = "Gap Junction"
