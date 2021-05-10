@@ -10,7 +10,6 @@
 - part: Plotting
   chapters:
   - file: plotting_3d
-  - file: plotting_Adj
 - part : Analysis
   chapters:
   - file: connectome_overview
@@ -18,3 +17,4 @@
   - file: GraphStats
   - file: Modularity
   - file: Affinity_Testing
+  - file: plotting_Adj
